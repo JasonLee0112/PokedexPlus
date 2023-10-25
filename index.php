@@ -1,6 +1,30 @@
 <html>
     <?php
-    echo "Php is processed correctly";
+    // echo "Php is processed correctly";
+
+    $servername = 'mysql.cs.virginia.edu';
+    $username = 'rmk9ds';
+    $password = 'Fall2023';
+
+    $dbname = 'rmk9ds_b';
+    $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
+
+
+
+
+    try {
+        $db = new PDO($dsn, $username, $password);
+        echo "<p> connected! <p>";
+
+    }
+    catch (PDOException $e){
+        $error_message = $e->getMessage();
+        echo "<p> Error: $error_message </p>";
+    }
+    catch (Exception $e){
+        $error_message = $e ->getMessage();
+        echo "<p> Not connection error!: $error_message </p>";
+    };
     ?>
 
     <head>
@@ -8,6 +32,15 @@
     </head>
 
     <p> test </p>
+    <p>
+        <?php 
+            $query = "SELECT email FROM `Account`";
+            $result = $db->query($query);
+            foreach ($result as $row){
+                print $row['email'];
+            }
+        ?>
+    </p>
 
     <div>
         <form>
