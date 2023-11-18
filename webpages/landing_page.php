@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <?php
     // echo "Php is processed correctly";
@@ -27,13 +28,14 @@
     ?>
 
     <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
         <!-- Header -->
         <div class="navbar navbar-expand-lg bg-body-secondary sticky-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/"> Pokedex+ </a>
+                <a class="navbar-brand" href="/"><img class="brand-image" src="/uvaball.png"> Pokedex+ </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"> Hi </span>
@@ -61,20 +63,34 @@
                     </ul>
                 </div>
                 <div class="justify-content-end nav-item">
-                    <a class="nav-link button" href="login">Login</a>
+                    <a class="nav-link button" href="login">Login/Register</a>
                 </div>
             </div>
         </div>
         <!-- End Header -->
 
         <!-- Content -->
-        <div>
-            <p> Pokemon </p>
-
-            <form method="POST">
-                
-                <input class="btn btn-primary" type="submit" value="Submit">
-            </form>
+        <div class="container welcome-page">
+            <div class="d-flex flex-row justify-content-xxl-center">
+                <div class="d-flex flex-column p-2">
+                    <h1 class="welcome-page"> Welcome! </h1>
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-xxl-center">
+                <div class="d-flex flex-column">
+                    <p> Log in or sign-up with the button at the top right </p> 
+                </div>
+            </div>
+            <div class="d-flex flex-row">
+                <div class="col border">
+                    <p> Popular Forum Posts: </p>
+                    <!-- Some code to fetch the forum post with the highest likes for the day -->
+                </div>
+                <div class="col border">
+                    <p> Today's Pokemon: </p>
+                    <!-- Some code to randomly fetch a pokemon from the pokedex -->
+                </div>
+            </div>
         </div>
         <!-- End Content -->
 

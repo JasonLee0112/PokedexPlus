@@ -3,12 +3,16 @@ const http = require('http');
 const hostname = '127.0.0.1';
 const port = 3000;
 
+const path = require('path')
+
 const express = require('express');
 const { spawn } = require('child_process');
 const app = express();
 
-app.get('/', (req, res) => {
-    let scriptPath = "./webpages/index.php";
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/home', (req, res) => {
+    let scriptPath = "./webpages/logged_index.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
@@ -22,6 +26,23 @@ app.get('/', (req, res) => {
         res.end();
     });
 });
+
+app.get('/', (req, res) => {
+    let scriptPath = "./webpages/landing_page.php";
+    const phpProcess = spawn('php', [scriptPath]);
+    phpProcess.stdout.on('data', (data) => {
+        res.write(data.toString());
+    });
+
+    phpProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    phpProcess.on('close', () => {
+        res.end();
+    });
+});
+
 
 app.get('/pokedex', (req, res) => {
     let scriptPath = "./webpages/pokedex.php";
@@ -103,6 +124,8 @@ app.get('/login', (req, res) => {
     });
 });
 
-app.listen(port, () => {
+const server = http.createServer(app);
+
+server.listen(port, hostname, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
