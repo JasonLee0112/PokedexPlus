@@ -30,6 +30,9 @@
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="styles.css">
+        <meta name="google-signin-client_id" content="926122338315-95c1lbkulm3en0ui5icuechntk4eq7jn.apps.googleusercontent.com">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script src="https://accounts.google.com/gsi/client" async></script>
     </head>
     <body>
         <!-- Header -->
@@ -62,8 +65,24 @@
                         </li>
                     </ul>
                 </div>
-                <div class="justify-content-end nav-item">
-                    <a class="nav-link button" href="login">Login/Register</a>
+                <!-- <div class="justify-content-end nav-item">
+                        <div id="g_id_onload"
+                            data-client_id="926122338315-95c1lbkulm3en0ui5icuechntk4eq7jn"
+                            data-login_uri="localhost:3000/home"
+                            data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-size="large"
+                            data-theme="outline"
+                            data-text="sign_in_with"
+                            data-shape="rectangular"
+                            data-logo_alignment="left">
+                        </div> -->
+
+                    <div class="justify-content-end nav-item">
+                        <a class="nav-link button" href="login">Login/Sign-Up</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -11,6 +11,36 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/sign-up', (req, res) => {
+    let scriptPath = "./webpages/signup.php";
+    const phpProcess = spawn('php', [scriptPath]);
+    phpProcess.stdout.on('data', (data) => {
+        res.write(data.toString());
+    });
+
+    phpProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    phpProcess.on('close', () => {
+        res.end();
+    });
+});
+
+app.post('/sign-up', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+    if (password !== confirmPassword) {
+        return res.status(400).send('Passwords do not match');
+    }
+
+    // Database Logic
+
+    res.send('Sign-up successful!');
+});
+
 app.get('/home', (req, res) => {
     let scriptPath = "./webpages/logged_index.php";
     const phpProcess = spawn('php', [scriptPath]);

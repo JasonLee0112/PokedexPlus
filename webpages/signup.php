@@ -43,50 +43,45 @@
 
         <!-- Content -->
 
-        <script>
-        function onSignIn(googleUser) {
-            // Handle the Google user object here
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        }
-        
-
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-            console.log('User signed out.');
-            });
-        }
-        </script>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <button onclick="signOut()">Sign out</button>
-
-        <!-- <form>
-            <div class="container d-flex justify-content-center mt-5">
-                <div class="card">
-                    <div class="d-flex row m-2">
-                        <label for="email-input" class="form-label"> Email Address </label>
-                        <input type="email" class="form-control" id="email-input">
-                        <div id="emailHelp" class="form-text">
-                            example@email.com
-                        </div>
+        <div class="container d-flex justify-content-center mt-5">
+            <form action="/sign-up" method="post" class="form-control" style="width: 75%;" onsubmit="return ValidateForm">
+                <div class="d-flex row m-4">
+                    <label for="email-input" class="form-label"> Email Address </label>
+                    <input type="email" class="form-control" id="email-input" required>
+                    <div id="emailHelp" class="form-text">
+                        example@email.com
                     </div>
-                    <div class="d-flex row m-2">
-                        <label for="password-input" class="form-label"> Password </label>
-                        <input type="password" class="form-control" id="password-input">
-                    </div>
-                    <div class="d-flex row m-2">
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                    </div>                        
-
                 </div>
-            </div>
-        </form> -->
-        <a href="sign-up">Sign-Up</a>
+                <div class="d-flex row m-4">
+                    <label for="password-input" class="form-label"> Password </label>
+                    <input type="password" class="form-control" id="password-input" required>
+                </div>
+                <div class="d-flex row m-4">
+                    <label for="confirm-password" class="form-label"> Verify Password </label>
+                    <input type="password" class="form-control" id="confirm-password" required>
+                </div>
+                <div class="d-flex row m-4">
+                    <input type="submit" class="btn btn-primary" value="Sign Up">
+                </div>
 
+
+            </div>
+        </form>
+
+        <script>
+            function validateForm() {
+                var password = document.getElementById("password-input").value;
+                var confirmPassword = document.getElementById("confirm-password").value;
+
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match");
+                    return false;
+                }
+
+                // Continue with form submission
+                return true;
+            }
+        </script>
         
 
         <!-- End Content -->
