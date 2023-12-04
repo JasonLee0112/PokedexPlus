@@ -12,7 +12,7 @@
         $email = $argv[1];
         $password = $argv[2];
         $username = $argv[3];
-        $checkQuery = "SELECT * FROM Account WHERE (email = :email OR username = :username) AND password = :password";
+        $checkQuery = 'SELECT * FROM Account WHERE (email=:email OR username=:username) AND password=:password';
         $statement = $db->prepare($checkQuery);
         $statement->bindValue(':email', $email);
         $statement->bindValue(':username', $username);

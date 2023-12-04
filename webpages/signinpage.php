@@ -7,39 +7,9 @@
         <meta name="google-signin-client_id" content="926122338315-95c1lbkulm3en0ui5icuechntk4eq7jn.apps.googleusercontent.com">
     </head>
     <body>
-        <!-- Header -->
-        <div class="navbar navbar-expand-lg bg-body-secondary sticky-top">
-                <div class="container-fluid">
-                <a class="navbar-brand" href="/"><img class="brand-image" src="/uvaball.png"> Pokedex+ </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"> Hi </span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="pokedex">Pokedex</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="create.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Create
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="team">Team</a></li>
-                                <li><a class="dropdown-item" href="pokemon">Pokemon</a></li>
-                            </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum">Forum</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        <!-- End Header -->
+        <?php
+        include('header.php');
+        ?>
 
         <!-- Content -->
         
@@ -63,7 +33,7 @@
                 </div>
                 <div class="d-flex row m-4">
                     <label for="password-input" class="form-label"> Password </label>
-                    <input type="password" class="form-control" id="password-input" required>
+                    <input type="password" class="form-control" id="password-input" name="password" required>
                 </div>
 
                 <div class="d-flex row m-4">
