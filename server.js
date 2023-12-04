@@ -362,13 +362,7 @@ app.post('/updateTeam', (req, res) => {
     //     res.status(400).send('NOT LOGGED IN');
     //     //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
     // }
-    let teamID = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < 16; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        teamID += characters.charAt(randomIndex);
-    }
+    let teamID = req.body.teamName;
     console.log(teamID, userID);
     let pmon1 = req.body.pokemon1;
     let pmon2 = req.body.pokemon2;

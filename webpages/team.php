@@ -42,6 +42,8 @@
         <div class="container">
         <div class="left-div">
         <form action="/updateTeam" method="post">
+            <label for="teamName">Team Name To Update:</label>
+            <input type="text" id="teamName" name="teamName"><br>
             <label for="pokemon1">Pokemon 1:</label>
             <select id="pokemon1" name="pokemon1" size="5" required>
                 <?php
