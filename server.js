@@ -15,7 +15,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'not-secure-key', // Change this to a secure secret key
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 10000 // Set the maximum age of the session to one hour (in milliseconds)
+      }
   }));
 
 app.get('/sign-up', (req, res) => {
@@ -108,6 +111,13 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+    const userID = req.session.userID;
+    if (userID){
+        console.log(userID);
+    }
+    else{
+        console.log('no user');
+    }
     let scriptPath = "./webpages/landing_page.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
@@ -221,28 +231,7 @@ app.get('/sign-in', (req,res) => {
         res.end();
     });
 })
-app.get('/test', (req, res) => {
-    let scriptPath = "./webpages/test.php";
-    const phpProcess = spawn('php', [scriptPath]);
-    let authenticateResult = "";
 
-    phpProcess.stdout.on('data', (data) => {
-        const output = data.toString().trim();
-        authenticateResult += output;
-        
-    });
-
-    phpProcess.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-    });
-
-    phpProcess.on('close', (code) => {
-        console.log("test", authenticateResult);
-        res.end();
-        // console.log(`child process exited with code ${code}`);
-        // res.send(authenticateResult);  // Send the response after the PHP script has completed
-    });
-});
 
 
 app.post('/authenticate', (req,res) => {
@@ -265,7 +254,7 @@ app.post('/authenticate', (req,res) => {
             console.log(authenticateResult);
             const userID = authenticateResult.split(': ')[2].trim();
             req.session.userID = userID;
-            res.redirect("/home");
+            res.redirect("/");
             return
         }
         
@@ -273,10 +262,7 @@ app.post('/authenticate', (req,res) => {
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    // phpProcess.on('close', (code) => {
-    //     console.log("auth", authenticateResult);
-    //     res.redirect("/home");  // Send the response after the PHP script has completed
-    // });
+
    
 })
 
