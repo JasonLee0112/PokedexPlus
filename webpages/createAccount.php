@@ -7,20 +7,22 @@
         $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
         try {
             $db = new PDO($dsn, $username, $password);
+            $query = 'INSERT INTO Account(email, password, username, userID, is_a_admin) VALUES(:email, :password, :username, :userid, :isaAdmin);';
             $email = $argv[1];
-            $checkQuery = "SELECT * FROM Account WHERE email = '$email'";
-            $statement = $db->prepare($checkQuery);
+            $password = $argv[2];
+            $username = $argv[3];
+            $userID = $argv[4];
+            $statement = $db->prepare($query);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':password', $password);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':userid', $userID);
+            $statement->bindValue(':isaAdmin', 0);
             $statement->execute();
-            
-            // echo $email;
-            if ($statement->rowCount() > 0){
-                echo "Email Found";
-            }
-            else{
-                echo "Email Not Found";
-            }
+            echo "Account Created";
 
         }
+        
         catch (PDOException $e){
             $error_message = $e->getMessage();
             echo "<p> Error: $error_message </p>";

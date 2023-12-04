@@ -46,37 +46,38 @@ app.post('/sign-up', (req, res) => {
     }
     let signupCheckScriptPath = "./webpages/signupCheck.php";
     let createAccountScriptPath = "./webpages/createAccount.php";
+    console.log(email);
     const phpProcess = spawn('php', [signupCheckScriptPath,email]);
     let checkEmail= "";
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         checkEmail += output;
+        // console.log(checkEmail);
         if(checkEmail.includes("Email Found")){
             console.log("redirect to login")
             res.redirect("/");
         }
         else if(checkEmail.includes("Email Not Found")){
             console.log("email not found");
-            res.redirect("/sign-up");
+            // execute a PHP script to insert account into db
+
+            // Generating random string found online
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let userID = '';
+            for (let i = 0; i < 16; i++) {
+              const randomIndex = Math.floor(Math.random() * characters.length);
+              userID += characters.charAt(randomIndex);
+            }
+
+            const phpProcess2 = spawn('php', [createAccountScriptPath,email,password,username,userID]);
+            phpProcess2.stdout.on('data', (data) => {
+                const output = data.toString().trim();
+                console.log(output);
+            });
+            res.redirect("/login")
         }
     });
-    
-    // else{
-    //     console.log("end");
-    //     res.end();
-    // }
-
-    // phpProcess.stderr.on('data', (data) => {
-    //     console.error(`stderr: ${data}`);
-    // });
-
-    // phpProcess.on('close', () => {
-    //     res.end();
-    // });
-
-    // // Database Logic
-
-    
+       
 });
 
 app.get('/home', (req, res) => {
