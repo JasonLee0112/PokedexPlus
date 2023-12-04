@@ -34,7 +34,7 @@ app.get('/sign-up', (req, res) => {
 app.post('/sign-up', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
-    const password = req.body.username;
+    const password = req.body.password;
     const confirmPassword = req.body.username;
     
     // do a select in the database based on user name, 
@@ -192,6 +192,41 @@ app.get('/accountloginsignup', (req, res) => {
         res.end();
     });
 });
+
+app.get('/sign-in', (req,res) => {
+    let scriptPath = "./webpages/signinpage.php";
+    const phpProcess = spawn('php', [scriptPath]);
+    phpProcess.stdout.on('data', (data) => {
+        res.write(data.toString());
+    });
+
+    phpProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    phpProcess.on('close', () => {
+        res.end();
+    });
+})
+
+app.post('/authenticate', (req,res) => {
+    let scriptPath = "./webpages/authenticate.php";
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.username;
+    const phpProcess = spawn('php', [scriptPath,email,password,username]);
+    let authenticateResult = "";
+    console.log("authenticate");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        authenticateResult += output;
+        // console.log(checkEmail);
+        if(authenticateResult.includes("Invalid username or password")){
+            console.log("authentication failed")
+            res.redirect("/sign-in");
+        }
+    });
+})
 
 app.post('/addPokemon', (req, res) => {
     let createPokemonScriptPath = "./webpages/addPokemon.php";

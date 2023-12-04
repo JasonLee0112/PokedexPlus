@@ -42,12 +42,14 @@
         <!-- End Header -->
 
         <!-- Content -->
-
+        
         <div class="container d-flex justify-content-center mt-5">
-            <form action="/sign-up" method="post" class="form-control" style="width: 75%;" onsubmit="return validateForm()">
+            
+            <form action="/authenticate" method="post" class="form-control" style="width: 75%;">
                 <div class="d-flex row m-4">
-                    <h1>  Sign Up  </h1>
+                    <h1>  Sign In</h1>
                 </div>
+                
                 <div class="d-flex row m-4">
                     <label for="email-input" class="form-label"> Email Address </label>
                     <input type="email" class="form-control" id="email-input" name="email" required>
@@ -59,41 +61,17 @@
                     <label for="username-input" class="form-label"> Username </label>
                     <input type="username" class="form-control" id="username-input" name="username" required>
                 </div>
-
-                
-
-
                 <div class="d-flex row m-4">
                     <label for="password-input" class="form-label"> Password </label>
                     <input type="password" class="form-control" id="password-input" required>
                 </div>
+
                 <div class="d-flex row m-4">
-                    <label for="confirm-password" class="form-label"> Verify Password </label>
-                    <input type="password" class="form-control" id="confirm-password" required>
-                </div>
-                <div class="d-flex row m-4">
-                    <input type="submit" class="btn btn-primary" value="Sign Up">
+                    <input type="submit" class="btn btn-primary" value="Sign In">
                 </div>
 
             </form>
         </div>
-
-        <script>
-            function validateForm() {
-                var username = document.getElementById("username-input").value;
-                var password = document.getElementById("password-input").value;
-                var confirmPassword = document.getElementById("confirm-password").value;
-
-                if (password !== confirmPassword) {
-                    alert("Passwords do not match");
-                    return false;
-                }
-
-                // Continue with form submission
-                console.log("continue");
-                return true;
-            }
-        </script>
         
 
         <!-- End Content -->
