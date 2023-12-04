@@ -190,6 +190,10 @@ app.get('/team', (req, res) => {
 
 app.get('/pokemon', (req, res) => {
     let scriptPath = "./webpages/pokemon.php";
+    let userID = req.session.userID;
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
@@ -408,6 +412,10 @@ app.post('/updateTeam', (req, res) => {
 
 app.get('/createTeamForm', (req, res) => {
     let scriptPath = "./webpages/createTeamForm.php";
+    let userID = req.session.userID;
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
