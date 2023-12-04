@@ -307,6 +307,38 @@ app.post('/addPokemon', (req, res) => {
     });
 });
 
+app.post('/updateTeam', (req, res) => {
+    let createTeamScriptPath = "./webpages/updateTeam.php";
+    console.log("I am starting to update team")
+    let pmon1 = req.body.pokemon1;
+    let pmon2 = req.body.pokemon2;
+    let pmon3 = req.body.pokemon3;
+    let pmon4 = req.body.pokemon4;
+    let pmon5 = req.body.pokemon5;
+    let pmon6 = req.body.pokemon6;
+    console.log(pmon1, pmon2, pmon3, pmon4, pmon5, pmon6);
+
+    const phpProcess = spawn('php', [createTeamScriptPath, pmon1, pmon2, pmon3, pmon4, pmon5, pmon6]);
+    let checkPokemon= "";
+    console.log("I ran updateTeam");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful updated team")){
+            console.log("Successful updated team")
+            res.redirect("/team");
+        }
+        else if(checkPokemon.includes("Did not update team")){
+            console.log("Did not update team");
+            res.redirect("/team");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/team");
+        }
+    });
+});
+
 
 
 const server = http.createServer(app);

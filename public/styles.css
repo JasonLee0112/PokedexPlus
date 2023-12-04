@@ -6,3 +6,19 @@
     width:30px;
     height:30px;
 }
+.container {
+    display: flex;
+    height: 115vh;
+}
+.left-div {
+    flex: 3;
+    background-color: #3498db;
+    color: #fff;
+    padding: 20px;
+}
+
+.right-div {
+    flex: 1;
+    background-color: #ecf0f1;
+    padding: 20px;
+}

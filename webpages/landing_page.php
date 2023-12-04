@@ -63,7 +63,7 @@
         include('header.php');
         ?>
         <!-- Content -->
-        <div class="container welcome-page">
+        <div class="welcome-page">
             <div class="d-flex flex-row justify-content-xxl-center">
                 <div class="d-flex flex-column p-2">
                     <h1 class="welcome-page"> Welcome! </h1>
