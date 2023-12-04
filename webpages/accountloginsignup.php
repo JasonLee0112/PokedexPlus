@@ -47,11 +47,27 @@
 
 
         </script>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        
+        <style>
+            .custom-button {
+                padding: 10px 20px; 
+                border-radius: 10px; 
+                font-size: 18px;
+                cursor: pointer; 
+            }
+        </style>
 
-        <button onclick="signUp()"> Sign Up</button>
-        <button onclick="signIn()"> Sign In</button>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <div class="d-flex justify-content-center mt-5">
+            <div class="d-flex row m-4">
+                <button class="custom-button" onclick="signUp()">Sign Up</button>
+            </div>
+            <div class="d-flex row m-4">
+                <button class="custom-button" onclick="signIn()">Sign In</button>
+            </div>
+        </div>
+
+
+ 
 
       
 

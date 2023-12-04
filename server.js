@@ -172,7 +172,7 @@ app.get('/team', (req, res) => {
     let scriptPath = "./webpages/team.php";
     let userID = req.session.userID;
     if (!userID){
-        res.redirect('/login');
+        res.redirect('/accountloginsignup');
     }
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
@@ -363,8 +363,7 @@ app.post('/updateTeam', (req, res) => {
     console.log("I am starting to update team")
     let userID = req.session.userID;
     if(!userID){
-        res.status(400).send('NOT LOGGED IN');
-        //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
+        res.redirect('/accountloginsignup')
     }
     let teamID = req.body.teamName;
     console.log(teamID, userID);
@@ -427,10 +426,9 @@ app.post('/createTeam', (req, res) => {
     let createTeamScriptPath = "./webpages/createTeam.php";
     console.log("I am starting to create team")
     let userID = req.session.userID;
-    // if(!userID){
-    //     res.status(400).send('NOT LOGGED IN');
-    //     //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
-    // }
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
     let teamID = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
