@@ -85,6 +85,13 @@ app.post('/sign-up', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
+    const userID = req.session.userID;
+    if (userID){
+        console.log(userID);
+    }
+    else{
+        console.log("no user");
+    }
     let scriptPath = "./webpages/logged_index.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
@@ -243,7 +250,7 @@ app.post('/authenticate', (req,res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    // console.log(username, email, password);
+    console.log(username, email, password);
     const phpProcess = spawn('php', [scriptPath,email,password,username]);
     let authenticateResult = "";
     phpProcess.stdout.on('data', (data) => {
@@ -254,12 +261,11 @@ app.post('/authenticate', (req,res) => {
             res.redirect("/sign-in");
             return
         }
-        if(authenticateResult.includes("Logged In")){
-            // console.log("authentication success")
-            
-            console.log("auth", authenticateResult);
-            // res.end();
-            // res.redirect("/test");
+        if(authenticateResult.includes("Logged In:")){
+            console.log(authenticateResult);
+            const userID = authenticateResult.split(': ')[2].trim();
+            req.session.userID = userID;
+            res.redirect("/home");
             return
         }
         
