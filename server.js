@@ -35,7 +35,7 @@ app.post('/sign-up', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.username;
+    const confirmPassword = req.body.confirmpassword;
     
     // do a select in the database based on user name, 
     // 1. if email already exists then redirect to login page
@@ -213,7 +213,7 @@ app.post('/authenticate', (req,res) => {
     let scriptPath = "./webpages/authenticate.php";
     const username = req.body.username;
     const email = req.body.email;
-    const password = req.body.username;
+    const password = req.body.password;
     console.log(username, email, password);
     const phpProcess = spawn('php', [scriptPath,email,password,username]);
     let authenticateResult = "";
@@ -221,7 +221,6 @@ app.post('/authenticate', (req,res) => {
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         authenticateResult += output;
-        
         if(authenticateResult.includes("Valid username or password")){
             console.log("authentication failed")
             res.redirect("/sign-in");
@@ -230,7 +229,7 @@ app.post('/authenticate', (req,res) => {
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    res.end();
+    // res.end();
 })
 
 app.post('/addPokemon', (req, res) => {
