@@ -2,7 +2,6 @@
 <html>
     <?php
         // echo "Php is processed correctly";
-        session_start();
         $servername = 'mysql.cs.virginia.edu';
         $username = 'rmk9ds';
         $password = 'Fall2023';
