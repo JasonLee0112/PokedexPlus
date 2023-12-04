@@ -124,8 +124,8 @@
                 <?php
                     try{
                     $comment_query = "SELECT DISTINCT Title, Body, Likes, Dislikes 
-                    FROM (SELECT comment_ID FROM `comment-belongs-to-forum` WHERE forum_Post_ID = $forum_id) AS subquery 
-                    NATURAL JOIN comment;";
+                    FROM ( SELECT comment_ID FROM `comment-belongs-to-forum` WHERE forum_Post_ID = $forum_id) AS subquery 
+                    JOIN `comment` ON subquery.comment_ID = `comment`.commentID;";
                     $statement = $db->prepare($comment_query);
                     $statement->execute();
                     $result = $statement->fetchAll(PDO::FETCH_ASSOC);

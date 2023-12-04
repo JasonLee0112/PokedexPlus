@@ -61,21 +61,22 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form method="POST" action="/process_forum_post">
                             <div class="mb-3">
                                 <label for="post-title" class="col-form-label"> Title </label>
-                                <input type="text" class="form-control" placeholder="Enter Title Here" id="post-title">
+                                <input type="text" class="form-control" placeholder="Enter Title Here" name="post_title">
                             </div>
                             <div class="mb-3">
                                 <label for="post-text" class="col-form-label"> Enter your post here </label>
-                                <textarea class="form-control" id="post-text"></textarea>
+                                <textarea class="form-control" name="post_text"></textarea>
                             </div>
-                        </form>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
-                        <button type="button" class="btn btn-primary"> Submit Post </button>
+                        <button type="submit" class="btn btn-primary"> Submit Post </button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -97,9 +98,9 @@
                             <div class="row">
                             <?php
                                 echo "<div class=\"d-flex align-items-center\">
-                                <button class=\"btn btn-primary btn-sm me-2\" onclick=\"send_like()\"> Like </button> 
+                                <button class=\"btn btn-primary btn-sm me-2\" name=\"{$row["forumPostID"]}_Like\" onclick=\"send_like()\"> Like </button> 
                                 <p class=\"mb-0 pe-2\"> Likes: ".$row["Likes"]."</p>
-                                <button class=\"btn btn-warning btn-sm me-2\" onclick=\"send_dislike()\"> Dislike </button>
+                                <button class=\"btn btn-warning btn-sm me-2\" name=\"{$row["forumPostID"]}_Dislike\" onclick=\"send_dislike()\"> Dislike </button>
                                 <p class=\"mb-0\"> Dislikes: ".$row["Dislikes"]."</p></div>";
                             ?>
                             </div>
@@ -113,11 +114,17 @@
             }
         ?>
 
+        <script>
+        // Track the current like/dislike state
+        let like_was_pressed = false;
+        let dislike_was_pressed = false;
+
+        </script>
 
         <!-- End Content -->
 
         <!-- Footer -->
-        <div class="navbar fixed-bottom bg-body-secondary">
+        <div class="navbar sticky-bottom bg-body-secondary">
             <div class="container-fluid">
                 Footer
             </div>

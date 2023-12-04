@@ -414,6 +414,114 @@ app.post('/process_comment', (req, res) => {
     });
   });
 
+app.post('/process_forum_post', (req, res) => {
+    let process_forum_path = "./webpages/process_forum.php";
+    console.log("I am starting to Insert")
+    let post_title = req.body.post_title;
+    let post_text = req.body.post_text;
+
+    const phpProcess = spawn('php', [process_forum_path, post_title, post_text]);
+    let checkPokemon= "";
+    console.log("I ran updateTeam");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful insert")){
+            console.log("Successful insert")
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("Did not insert")){
+            console.log("Did not insert");
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/forum");
+        }
+    });
+  });
+
+app.post('/forum_liked', (req, res) => {
+    let process_forum_path = "./webpages/likes.php";
+    console.log("I am starting to Insert")
+    let new_like_value = req.body.like_value;
+    let which_value = req.body.which_value;
+
+    const phpProcess = spawn('php', [process_forum_path, new_like_value, which_value]);
+    let checkPokemon= "";
+    console.log("I ran");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful")){
+            console.log("Successful")
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("Did not insert")){
+            console.log("Did not insert");
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/forum");
+        }
+    });
+  });
+
+app.post('/comment_liked', (req, res) => {
+    let process_forum_path = "./webpages/likes.php";
+    console.log("I am starting to Insert")
+    let new_like_value = req.body.like_value;
+    let which_value = req.body.which_value;
+
+    const phpProcess = spawn('php', [process_forum_path, new_like_value, which_value]);
+    let checkPokemon= "";
+    console.log("I ran");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful")){
+            console.log("Successful")
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("Did not insert")){
+            console.log("Did not insert");
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/forum");
+        }
+    });
+  });
+
+app.post('/forum_page_like', (req, res) => {
+    let process_forum_path = "./webpages/likes.php";
+    console.log("I am starting to Insert")
+    let new_like_value = req.body.like_value;
+    let which_value = req.body.which_value;
+
+    const phpProcess = spawn('php', [process_forum_path, new_like_value, which_value]);
+    let checkPokemon= "";
+    console.log("I ran");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful")){
+            console.log("Successful")
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("Did not insert")){
+            console.log("Did not insert");
+            res.redirect("/forum");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/forum");
+        }
+    });
+  });
+
 
 const server = http.createServer(app);
 
