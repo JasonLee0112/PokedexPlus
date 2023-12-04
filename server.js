@@ -170,6 +170,10 @@ app.get('/forum', (req, res) => {
 
 app.get('/team', (req, res) => {
     let scriptPath = "./webpages/team.php";
+    let userID = req.session.userID;
+    if (!userID){
+        res.redirect('/login');
+    }
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
