@@ -56,10 +56,6 @@
                     <label for="username-input" class="form-label"> Username </label>
                     <input type="username" class="form-control" id="username-input" name="username" required>
                 </div>
-
-                
-
-
                 <div class="d-flex row m-4">
                     <label for="password-input" class="form-label"> Password </label>
                     <input type="password" class="form-control" id="password-input" required>

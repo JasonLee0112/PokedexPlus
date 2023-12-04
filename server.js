@@ -34,8 +34,8 @@ app.get('/sign-up', (req, res) => {
 app.post('/sign-up', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
-    const password = req.body.username;
-    const confirmPassword = req.body.username;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
     
     // do a select in the database based on user name, 
     // 1. if email already exists then redirect to login page
@@ -57,7 +57,7 @@ app.post('/sign-up', (req, res) => {
         }
         else if(checkEmail.includes("Email Not Found")){
             console.log("email not found");
-            res.redirect("/sign-up");
+            
         }
     });
     
