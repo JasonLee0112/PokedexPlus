@@ -177,8 +177,8 @@ app.get('/pokemon', (req, res) => {
     });
 });
 
-app.get('/login', (req, res) => {
-    let scriptPath = "./webpages/login.php";
+app.get('/accountloginsignup', (req, res) => {
+    let scriptPath = "./webpages/accountloginsignup.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());

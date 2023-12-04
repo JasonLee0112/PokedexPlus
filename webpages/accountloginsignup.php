@@ -54,40 +54,27 @@
         }
         
 
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-            console.log('User signed out.');
-            });
+        function signUp() {
+            // var auth2 = gapi.auth2.getAuthInstance();
+            // auth2.signOut().then(function () {
+            // console.log('User signed out.');
+            // });
+            var url = 'http://localhost:3000/sign-up';
+            
+            // Redirect to the specified URL
+            window.location.href = url;
         }
+
+
         </script>
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
         <button onclick="signOut()">Sign out</button>
 
-        <button onclick="signIn()"> Sign in</button>
+        <button onclick="signUp()"> Sign Up</button>
 
-        <!-- <form>
-            <div class="container d-flex justify-content-center mt-5">
-                <div class="card">
-                    <div class="d-flex row m-2">
-                        <label for="email-input" class="form-label"> Email Address </label>
-                        <input type="email" class="form-control" id="email-input">
-                        <div id="emailHelp" class="form-text">
-                            example@email.com
-                        </div>
-                    </div>
-                    <div class="d-flex row m-2">
-                        <label for="password-input" class="form-label"> Password </label>
-                        <input type="password" class="form-control" id="password-input">
-                    </div>
-                    <div class="d-flex row m-2">
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                    </div>                        
-
-                </div>
-            </div>
-        </form> -->
+      
         <a href="sign-up">Sign-Up</a>
+        <a href="sign-up">Log In</a>
 
         
 
