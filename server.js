@@ -261,6 +261,30 @@ app.post('/authenticate', (req,res) => {
    
 })
 
+app.get('/forum/post', (req, res) => {
+    let scriptPath = "./webpages/forum_posts.php";
+    let forumId = req.query.forumId;
+
+    try {
+        forumId = parseInt(forumId, 10);
+    } catch (error) {
+        console.log("NaN");
+    }
+    const phpProcess = spawn('php', [scriptPath, forumId]);
+    phpProcess.stdout.on('data', (data) => {
+        res.write(data.toString());
+    });
+
+    phpProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    phpProcess.on('close', () => {
+        // console.log(forumId);
+        res.end(); 
+    });
+});
+
 app.post('/addPokemon', (req, res) => {
     let createPokemonScriptPath = "./webpages/addPokemon.php";
     let pname = req.body.pname;
@@ -338,8 +362,6 @@ app.post('/updateTeam', (req, res) => {
         }
     });
 });
-
-
 
 const server = http.createServer(app);
 

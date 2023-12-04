@@ -14,7 +14,7 @@
 
         try {
             $db = new PDO($dsn, $username, $password);
-            $forum_query = "SELECT Title, Body, Likes, Dislikes FROM ForumPost GROUP BY forumPostID";
+            $forum_query = "SELECT forumPostID, Title, Body, Likes, Dislikes FROM ForumPost GROUP BY forumPostID";
             $statement = $db->prepare($forum_query);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -88,10 +88,11 @@
                     <div class="card">
                         <div class="card-body">
                             <?php
-                                echo "<h1 class=\"border border-light border-opacity-50 border-4 rounded\">".$row["Title"]."</h1>";
+                                echo "<a class=\"fs-1 text-reset link-underline link-underline-opacity-0\" href=\"forum/post?forumId=".urlencode($row["forumPostID"])."\">"
+                                .$row["Title"]."</a>";
                             ?>
                             <?php
-                                echo "<p class=\"border border-light-subtle border-2 rounded\">".$row["Body"]."</p>";
+                                echo "<p class=\"border border-light-subtle border-2 rounded\">".substr($row["Body"],0, 500)."</p>";
                             ?>
                             <div class="row">
                             <?php
@@ -116,7 +117,7 @@
         <!-- End Content -->
 
         <!-- Footer -->
-        <div class="navbar sticky-bottom bg-body-secondary">
+        <div class="navbar fixed-bottom bg-body-secondary">
             <div class="container-fluid">
                 Footer
             </div>
