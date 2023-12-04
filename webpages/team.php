@@ -15,6 +15,11 @@
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+            $team_query = "SELECT * FROM `PokemonTeam` WHERE TeamID=0";
+            $statement1 = $db->prepare($team_query);
+            $statement1->execute();
+            $team = $statement1->fetchAll(PDO::FETCH_ASSOC);
+
         }
         catch (PDOException $e){
             $error_message = $e->getMessage();
@@ -95,6 +100,17 @@
         </form>
         </div>
         <div class="right-div">
+            <?php
+                foreach($team as $t) { ?>
+                    <h2><?= $t['TeamName'] ?></h2>
+                    <p>Pokemon 1: <?= $t['Pokemon1'] ?></p>
+                    <p>Pokemon 2: <?= $t['Pokemon2'] ?></p>
+                    <p>Pokemon 3: <?= $t['Pokemon3'] ?></p>
+                    <p>Pokemon 4: <?= $t['Pokemon4'] ?></p>
+                    <p>Pokemon 5: <?= $t['Pokemon5'] ?></p>
+                    <p>Pokemon 6: <?= $t['Pokemon6'] ?></p>
+            <?php
+            } ?>
         </div>
         </div>
         
