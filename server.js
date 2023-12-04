@@ -17,7 +17,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        maxAge: 10000 // Set the maximum age of the session to one hour (in milliseconds)
+        maxAge: 100000 
       }
   }));
 
@@ -358,9 +358,10 @@ app.post('/updateTeam', (req, res) => {
     let createTeamScriptPath = "./webpages/updateTeam.php";
     console.log("I am starting to update team")
     let userID = req.session.userID;
-    if(!userID){
-        //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
-    }
+    // if(!userID){
+    //     res.status(400).send('NOT LOGGED IN');
+    //     //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
+    // }
     let teamID = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -368,6 +369,7 @@ app.post('/updateTeam', (req, res) => {
         const randomIndex = Math.floor(Math.random() * characters.length);
         teamID += characters.charAt(randomIndex);
     }
+    console.log(teamID, userID);
     let pmon1 = req.body.pokemon1;
     let pmon2 = req.body.pokemon2;
     let pmon3 = req.body.pokemon3;
