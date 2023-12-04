@@ -65,11 +65,11 @@
 
                 <div class="d-flex row m-4">
                     <label for="password-input" class="form-label"> Password </label>
-                    <input type="password" class="form-control" id="password-input" required>
+                    <input type="password" class="form-control" id="password-input" name ="password" required>
                 </div>
                 <div class="d-flex row m-4">
                     <label for="confirm-password" class="form-label"> Verify Password </label>
-                    <input type="password" class="form-control" id="confirm-password" required>
+                    <input type="password" class="form-control" id="confirm-password" name="confirmpassword" required>
                 </div>
                 <div class="d-flex row m-4">
                     <input type="submit" class="btn btn-primary" value="Sign Up">

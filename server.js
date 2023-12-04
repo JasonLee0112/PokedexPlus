@@ -35,7 +35,7 @@ app.post('/sign-up', (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.username;
+    const confirmPassword = req.body.confirmpassword;
     
     // do a select in the database based on user name, 
     // 1. if email already exists then redirect to login page
@@ -74,7 +74,7 @@ app.post('/sign-up', (req, res) => {
                 const output = data.toString().trim();
                 console.log(output);
             });
-            res.redirect("/login")
+            res.redirect("/accountloginsignup")
         }
     });
        
@@ -145,6 +145,8 @@ app.get('/forum', (req, res) => {
     });
 });
 
+
+
 app.get('/team', (req, res) => {
     let scriptPath = "./webpages/team.php";
     const phpProcess = spawn('php', [scriptPath]);
@@ -208,29 +210,55 @@ app.get('/sign-in', (req,res) => {
         res.end();
     });
 })
-
+app.get('/test', (req,res)=> {
+    console.log('test log');
+    let scriptPath ="./webpages/test.php";
+    const phpProcess = spawn('php',[scriptPath]);
+    let authenticateResult= "";
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        authenticateResult += output;
+        console.log(authenticateResult);
+    });
+    res.end();
+})
+app.get('/shutdown', (req,res)=> {
+    console.log('test log');
+    let scriptPath ="./webpages/shutdown.php";
+    const phpProcess = spawn('php',[scriptPath]);
+    let authenticateResult= "";
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        authenticateResult += output;
+        console.log(authenticateResult);
+    });
+    res.end();
+})
 app.post('/authenticate', (req,res) => {
     let scriptPath = "./webpages/authenticate.php";
     const username = req.body.username;
     const email = req.body.email;
-    const password = req.body.username;
-    console.log(username, email, password);
+    const password = req.body.password;
+    // console.log(username, email, password);
     const phpProcess = spawn('php', [scriptPath,email,password,username]);
     let authenticateResult = "";
-    console.log("authenticate");
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         authenticateResult += output;
-        
-        if(authenticateResult.includes("Valid username or password")){
+        console.log(authenticateResult);
+        if(authenticateResult.includes("Invalid username, email, or password")){
             console.log("authentication failed")
             res.redirect("/sign-in");
+        }
+        if(authenticateResult.includes("Logged In")){
+            console.log("authentication success")
+            res.redirect("/test");
         }
     });
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    res.end();
+   
 })
 
 app.get('/forum/post', (req, res) => {
