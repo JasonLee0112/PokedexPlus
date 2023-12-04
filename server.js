@@ -4,7 +4,7 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const path = require('path')
-
+const session = require('express-session');
 const express = require('express');
 const { spawn } = require('child_process');
 const app = express();
@@ -12,7 +12,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
+app.use(session({
+    secret: 'not-secure-key', // Change this to a secure secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 10000 // Set the maximum age of the session to one hour (in milliseconds)
+      }
+  }));
 
 app.get('/sign-up', (req, res) => {
   
@@ -81,6 +88,13 @@ app.post('/sign-up', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
+    const userID = req.session.userID;
+    if (userID){
+        console.log(userID);
+    }
+    else{
+        console.log("no user");
+    }
     let scriptPath = "./webpages/logged_index.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
@@ -97,6 +111,13 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+    const userID = req.session.userID;
+    if (userID){
+        console.log(userID);
+    }
+    else{
+        console.log('no user');
+    }
     let scriptPath = "./webpages/landing_page.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
@@ -210,54 +231,38 @@ app.get('/sign-in', (req,res) => {
         res.end();
     });
 })
-app.get('/test', (req,res)=> {
-    console.log('test log');
-    let scriptPath ="./webpages/test.php";
-    const phpProcess = spawn('php',[scriptPath]);
-    let authenticateResult= "";
-    phpProcess.stdout.on('data', (data) => {
-        const output = data.toString().trim();
-        authenticateResult += output;
-        console.log(authenticateResult);
-    });
-    res.end();
-})
-app.get('/shutdown', (req,res)=> {
-    console.log('test log');
-    let scriptPath ="./webpages/shutdown.php";
-    const phpProcess = spawn('php',[scriptPath]);
-    let authenticateResult= "";
-    phpProcess.stdout.on('data', (data) => {
-        const output = data.toString().trim();
-        authenticateResult += output;
-        console.log(authenticateResult);
-    });
-    res.end();
-})
+
+
+
 app.post('/authenticate', (req,res) => {
     let scriptPath = "./webpages/authenticate.php";
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    // console.log(username, email, password);
+    console.log(username, email, password);
     const phpProcess = spawn('php', [scriptPath,email,password,username]);
     let authenticateResult = "";
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         authenticateResult += output;
-        console.log(authenticateResult);
         if(authenticateResult.includes("Invalid username, email, or password")){
-            console.log("authentication failed")
+            // console.log("authentication failed")
             res.redirect("/sign-in");
+            return
         }
-        if(authenticateResult.includes("Logged In")){
-            console.log("authentication success")
-            res.redirect("/test");
+        if(authenticateResult.includes("Logged In:")){
+            console.log(authenticateResult);
+            const userID = authenticateResult.split(': ')[2].trim();
+            req.session.userID = userID;
+            res.redirect("/");
+            return
         }
+        
     });
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
+
    
 })
 
