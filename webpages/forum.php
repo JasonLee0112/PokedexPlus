@@ -121,15 +121,18 @@
                     <div class="card">
                         <div class="card-body">
                             <?php
-                                echo "<h1 class=\"border border-dark border-opacity-50 border-4 rounded\">".$row["Title"]."</h1>";
+                                echo "<h1 class=\"border border-light border-opacity-50 border-4 rounded\">".$row["Title"]."</h1>";
                             ?>
                             <?php
                                 echo "<p class=\"border border-light-subtle border-2 rounded\">".$row["Body"]."</p>";
                             ?>
                             <div class="row">
                             <?php
-                                echo "<div><button class=\"btn btn-sm\">Like</button> Likes: ".$row["Likes"]." <button class=\"btn btn-sm\">Dislike</button>
-                                 Dislikes: ".$row["Dislikes"]."</div>";
+                                echo "<div class=\"d-flex align-items-center\">
+                                <button class=\"btn btn-primary btn-sm me-2\" onclick=\"send_like()\"> Like </button> 
+                                <p class=\"mb-0 pe-2\"> Likes: ".$row["Likes"]."</p>
+                                <button class=\"btn btn-warning btn-sm me-2\" onclick=\"send_dislike()\"> Dislike </button>
+                                <p class=\"mb-0\"> Dislikes: ".$row["Dislikes"]."</p></div>";
                             ?>
                             </div>
                         </div>

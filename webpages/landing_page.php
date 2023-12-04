@@ -133,7 +133,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <?php
-                                    echo "<a class=\"fs-4\" href=#><b>".$forum_information["Title"]."</b></a><br>";
+                                    echo "<a class=\"fs-4 link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-offset-1-hover\" href=#><b>".$forum_information["Title"]."</b></a><br>";
                                     $body = $forum_information["Body"];
                                     if(strlen($body) > 100){
                                         echo substr($body, 0, 100)."...<br>";
