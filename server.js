@@ -250,12 +250,15 @@ app.post('/authenticate', (req,res) => {
             console.log("authentication failed")
             res.redirect("/sign-in");
         }
+        if(authenticateResult.includes("Logged In")){
+            console.log("authentication success")
+            res.redirect("/test");
+        }
     });
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    console.log("authentication success");
-    res.redirect("/test");
+   
 })
 
 app.post('/addPokemon', (req, res) => {

@@ -26,15 +26,17 @@ session_start();
             // Authentication successful
             $_SESSION['user_id'] = $user['userID']; // Assuming 'id' is the user's unique identifier in the database
             // echo $_SESSION['user_id'];
-            header('Location: landing_page.php'); // Redirect to the dashboard or another protected page
-            // echo 'Valid username or password';
-            exit();
-            
+            if ($_SESSION['user_id']){
+                echo 'Logged In';
+                exit();
+            } 
             
         }
         else {
             // Authentication failed
-            echo 'Invalid username or password';
+            echo 'Invalid username, email, or password';
+            // exit();
+
         }
     }
     
