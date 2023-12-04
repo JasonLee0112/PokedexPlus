@@ -362,10 +362,10 @@ app.post('/updateTeam', (req, res) => {
     let createTeamScriptPath = "./webpages/updateTeam.php";
     console.log("I am starting to update team")
     let userID = req.session.userID;
-    // if(!userID){
-    //     res.status(400).send('NOT LOGGED IN');
-    //     //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
-    // }
+    if(!userID){
+        res.status(400).send('NOT LOGGED IN');
+        //TODO: JOSH SEND AN ALERT OR SOMETHING LIKE NOT LOGGED IN?
+    }
     let teamID = req.body.teamName;
     console.log(teamID, userID);
     let pmon1 = req.body.pokemon1;
