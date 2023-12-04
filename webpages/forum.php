@@ -96,13 +96,22 @@
                                 echo "<p class=\"border border-light-subtle border-2 rounded\">".substr($row["Body"],0, 500)."</p>";
                             ?>
                             <div class="row">
+                                <form id="likeDislikeForm<?php echo $row["forumPostID"]?>" method="post" action="/forum_like">
                             <?php
                                 echo "<div class=\"d-flex align-items-center\">
-                                <button class=\"btn btn-primary btn-sm me-2\" name=\"{$row["forumPostID"]}_Like\" onclick=\"send_like()\"> Like </button> 
-                                <p class=\"mb-0 pe-2\"> Likes: ".$row["Likes"]."</p>
-                                <button class=\"btn btn-warning btn-sm me-2\" name=\"{$row["forumPostID"]}_Dislike\" onclick=\"send_dislike()\"> Dislike </button>
-                                <p class=\"mb-0\"> Dislikes: ".$row["Dislikes"]."</p></div>";
+                                <button type=\"submit\" class=\"btn btn-primary btn-sm me-2\" 
+                                name=\"{$row["forumPostID"]}_like\" onclick=\"forumLike({$row["forumPostID"]})\"> Like </button> 
+                                
+                                <p id=\"like_count{$row["forumPostID"]}\" class=\"mb-0 pe-2\"> Likes: ".$row["Likes"]."</p>
+                                
+                                <button type=\"submit\" class=\"btn btn-warning btn-sm me-2\" 
+                                name=\"{$row["forumPostID"]}_dislike\" onclick=\"forumDislike({$row["forumPostID"]})\"> Dislike </button>
+                                <p id=\"dislike_count{$row["forumPostID"]}\" class=\"mb-0\"> Dislikes: ".$row["Dislikes"]."</p></div>";
                             ?>
+                                <input type="hidden" id="updatePostId<?php echo $row["forumPostID"]?>" name="updatePostId" value="">
+                                <input type="hidden" id="updateAction<?php echo $row["forumPostID"]?>" name="updateAction" value="">
+                                <input type="hidden" id="updateAmount<?php echo $row["forumPostID"]?>" name="updateAmount" value="">
+                                    </form>
                             </div>
                         </div>
                     </div>
@@ -113,16 +122,6 @@
                 echo "Empty";
             }
         ?>
-
-        <script>
-        // Track the current like/dislike state
-        let like_was_pressed = false;
-        let dislike_was_pressed = false;
-
-        </script>
-
-        <!-- End Content -->
-
         <!-- Footer -->
         <div class="navbar sticky-bottom bg-body-secondary">
             <div class="container-fluid">
@@ -134,6 +133,53 @@
             $db = null;
         ?>
         <!-- End Footer -->
+        <script>
+            let is_liked = false;
+            let is_disliked = false;
+            function forumLike(forum_post_id){
+                let like_value = Number(document.getElementById("like_count".concat(forum_post_id)).innerHTML.substring(8));
+                if(!is_liked){
+                    like_value = like_value + 1;
+                    
+                }
+                else{
+                    like_value = like_value - 1;
+                }
+                is_liked = !is_liked;
+                document.getElementById("like_count".concat(forum_post_id)).innerText = ' Likes: '.concat(String(like_value));
+                updateDatabase(forum_post_id, 'like', like_value);
+
+            }
+            function forumDislike(forum_post_id){
+                let like_value = Number(document.getElementById("dislike_count".concat(forum_post_id)).innerHTML.substring(11));
+                if(!is_disliked){
+                    like_value = like_value + 1;
+                }
+                else{
+                    like_value = like_value - 1;
+                }
+                is_disliked != is_disliked;
+                document.getElementById("dislike_count".concat(forum_post_id)).innerText = ' Dislikes: '.concat(String(like_value));
+
+                updateDatabase(forum_post_id, 'dislike', like_value);
+            }
+            function updateDatabase(postID, action, like_value) {
+                    // Update the hidden form fields with the post ID and action
+                    document.getElementById('updatePostId'.concat(postID)).value = postID;
+                    document.getElementById('updateAction'.concat(postID)).value = action;
+                    document.getElementById('updateAmount'.concat(postID)).value = like_value;
+                    console.log('Updated values:', {
+                        postID: document.getElementById('updatePostId' + postID).value,
+                        action: document.getElementById('updateAction' + postID).value,
+                        amount: document.getElementById('updateAmount' + postID).value                        
+                    });
+                    // Submit the form
+                    document.getElementById('likeDislikeForm' + postID).submit();
+                }
+
+        </script>
+        <!-- End Content -->
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>

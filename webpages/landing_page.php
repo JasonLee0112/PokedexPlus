@@ -63,59 +63,61 @@
         include('header.php');
         ?>
         <!-- Content -->
-        <div class="welcome-page">
-            <div class="d-flex flex-row justify-content-xxl-center">
-                <div class="d-flex flex-column p-2">
-                    <h1 class="welcome-page"> Welcome! </h1>
+        <div class="container-fluid">
+            <div class="welcome-page">
+                <div class="d-flex flex-row justify-content-xxl-center">
+                    <div class="d-flex flex-column p-2">
+                        <h1 class="welcome-page"> Welcome! </h1>
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex flex-row justify-content-xxl-center">
-                <div class="d-flex flex-column">
-                    <p> Log in or sign-up with the button at the top right </p> 
+                <div class="d-flex flex-row justify-content-xxl-center">
+                    <div class="d-flex flex-column">
+                        <p> Log in or sign-up with the button at the top right </p> 
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex flex-row">
-                <div class="col border">
-                    <p> Most Popular Forum Posts: </p>
-                    <!-- Some code to fetch the forum post with the highest likes/dislike ratio then like count for the day -->
-                    <?php foreach ($forum_posts as $forum_information){
-                        ?>
+                <div class="d-flex flex-row">
+                    <div class="col border">
+                        <p> Most Popular Forum Posts: </p>
+                        <!-- Some code to fetch the forum post with the highest likes/dislike ratio then like count for the day -->
+                        <?php foreach ($forum_posts as $forum_information){
+                            ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <?php
+                                        echo "<a class=\"fs-4 link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-offset-1-hover\" href=#><b>".$forum_information["Title"]."</b></a><br>";
+                                        $body = $forum_information["Body"];
+                                        if(strlen($body) > 100){
+                                            echo substr($body, 0, 100)."...<br>";
+                                        }
+                                        else{
+                                            echo $body."<br>";
+                                        }
+                                        echo "<br>Likes: ".$forum_information["Likes"];
+                                        echo " Dislikes: ".$forum_information["Dislikes"];
+                                    ?>
+                                </div>
+                            </div>
+                            <?php
+                            } 
+                        ?> 
+                    </div>
+                    <div class="col border">
+                        <p> Today's Pokemon: </p>
+                        <!-- Some code to randomly fetch a pokemon from the pokedex -->
                         <div class="card">
                             <div class="card-body">
-                                <?php
-                                    echo "<a class=\"fs-4 link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-offset-1-hover\" href=#><b>".$forum_information["Title"]."</b></a><br>";
-                                    $body = $forum_information["Body"];
-                                    if(strlen($body) > 100){
-                                        echo substr($body, 0, 100)."...<br>";
-                                    }
-                                    else{
-                                        echo $body."<br>";
-                                    }
-                                    echo "<br>Likes: ".$forum_information["Likes"];
-                                    echo " Dislikes: ".$forum_information["Dislikes"];
+                                <?php echo $pokemon_data[0]["PokeName"];?>
+                                <p class="m-3"> Stats: <br>
+                                <?php 
+                                    echo "HP: ".$pokemon_data[0]["HP"];
+                                    echo "<br>Attack: ".$pokemon_data[0]["Attack"];
+                                    echo "<br>Defense: ".$pokemon_data[0]["Defense"];
+                                    echo "<br>Special Attack: ".$pokemon_data[0]["SpecialAttack"];
+                                    echo "<br>Special Defense: ".$pokemon_data[0]["SpecialDefense"];
+                                    echo "<br>Speed: ".$pokemon_data[0]["Speed"];
                                 ?>
+                                </p>
                             </div>
-                        </div>
-                        <?php
-                        } 
-                    ?> 
-                </div>
-                <div class="col border">
-                    <p> Today's Pokemon: </p>
-                    <!-- Some code to randomly fetch a pokemon from the pokedex -->
-                    <div class="card">
-                        <div class="card-body">
-                            <?php echo $pokemon_data[0]["PokeName"];?>
-                            <p class="m-3"> Stats: <br>
-                            <?php 
-                                echo "HP: ".$pokemon_data[0]["HP"];
-                                echo "<br>Attack: ".$pokemon_data[0]["Attack"];
-                                echo "<br>Defense: ".$pokemon_data[0]["Defense"];
-                                echo "<br>Special Attack: ".$pokemon_data[0]["SpecialAttack"];
-                                echo "<br>Special Defense: ".$pokemon_data[0]["SpecialDefense"];
-                                echo "<br>Speed: ".$pokemon_data[0]["Speed"];
-                            ?>
-                            </p>
                         </div>
                     </div>
                 </div>
