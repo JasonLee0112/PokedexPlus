@@ -214,18 +214,23 @@ app.post('/authenticate', (req,res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.username;
+    console.log(username, email, password);
     const phpProcess = spawn('php', [scriptPath,email,password,username]);
     let authenticateResult = "";
     console.log("authenticate");
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         authenticateResult += output;
-        // console.log(checkEmail);
-        if(authenticateResult.includes("Invalid username or password")){
+        
+        if(authenticateResult.includes("Valid username or password")){
             console.log("authentication failed")
             res.redirect("/sign-in");
         }
     });
+    phpProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+    res.end();
 })
 
 app.post('/addPokemon', (req, res) => {
