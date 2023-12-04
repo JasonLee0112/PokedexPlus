@@ -101,12 +101,22 @@
                 <div class="row">
                     <div class="col-11">
                         <p class="m-3">
+                        <form id="likeDislikeForm<?php echo $forum_post["forumPostID"]?>" method="post" action="/forum_like">
                         <?php
-                            echo "<div class=\"m-3 d-flex align-items-center\">
-                            <button class=\"btn btn-primary btn-sm me-2\" onclick=\"send_like()\"> Like </button> 
-                            <p class=\"mb-0 pe-2\"> Likes: ".$forum_post["Likes"]."</p>
-                            <button class=\"btn btn-warning btn-sm me-2\" onclick=\"send_dislike()\"> Dislike </button>
-                            <p class=\"mb-0\"> Dislikes: ".$forum_post["Dislikes"]."</p></div>";                    ?>
+                            echo "<div class=\"d-flex align-items-center\">
+                            <button type=\"submit\" class=\"btn btn-primary btn-sm me-2\" 
+                            name=\"{$forum_post["forumPostID"]}_like\" onclick=\"forumLike({$forum_post["forumPostID"]})\"> Like </button> 
+
+                            <p id=\"like_count{$forum_post["forumPostID"]}\" class=\"mb-0 pe-2\"> Likes: ".$forum_post["Likes"]."</p>
+
+                            <button type=\"submit\" class=\"btn btn-warning btn-sm me-2\" 
+                            name=\"{$forum_post["forumPostID"]}_dislike\" onclick=\"forumDislike({$forum_post["forumPostID"]})\"> Dislike </button>
+                            <p id=\"dislike_count{$forum_post["forumPostID"]}\" class=\"mb-0\"> Dislikes: ".$forum_post["Dislikes"]."</p></div>";
+                            ?>
+                            <input type="hidden" id="updatePostId<?php echo $forum_post["forumPostID"]?>" name="updatePostId" value="">
+                            <input type="hidden" id="updateAction<?php echo $forum_post["forumPostID"]?>" name="updateAction" value="">
+                            <input type="hidden" id="updateAmount<?php echo $forum_post["forumPostID"]?>" name="updateAmount" value="">            
+                            </form>
                         </p>
                     </div>
                 </div>
@@ -123,7 +133,7 @@
                 <div class="col-11">
                 <?php
                     try{
-                    $comment_query = "SELECT DISTINCT Title, Body, Likes, Dislikes 
+                    $comment_query = "SELECT DISTINCT commentID, Title, Body, Likes, Dislikes 
                     FROM ( SELECT comment_ID FROM `comment-belongs-to-forum` WHERE forum_Post_ID = $forum_id) AS subquery 
                     JOIN `comment` ON subquery.comment_ID = `comment`.commentID;";
                     $statement = $db->prepare($comment_query);
@@ -149,13 +159,24 @@
                                     <div class="fw-bold"><?php echo $comment_body["Title"] ?></div>
                                     <?php echo $comment_body["Body"] ?>
                                 </div>
+                                    <form id="commentLikeDislikeForm<?php echo $comment_body["commentID"]?>" method="post" action="/comment_like">
                                 <?php
-                                    echo "<div class=\"m-3 d-flex align-items-center\">
-                                    <button class=\"btn btn-primary btn-sm me-2\" onclick=\"send_like()\"> Like </button> 
-                                    <p class=\"mb-0 pe-2\"> Likes: ".$comment_body["Likes"]."</p>
-                                    <button class=\"btn btn-warning btn-sm me-2\" onclick=\"send_dislike()\"> Dislike </button>
-                                    <p class=\"mb-0\"> Dislikes: ".$comment_body["Dislikes"]."</p></div>";  
+                                echo "<div class=\"d-flex align-items-center\">
+                                <button type=\"submit\" class=\"btn btn-primary btn-sm me-2\" 
+                                name=\"{$comment_body["commentID"]}_like\" onclick=\"commentLike({$comment_body["commentID"]})\"> Like </button> 
+                                
+                                <p id=\"like_count{$comment_body["commentID"]}\" class=\"mb-0 pe-2\"> Likes: ".$comment_body["Likes"]."</p>
+                                
+                                <button type=\"submit\" class=\"btn btn-warning btn-sm me-2\" 
+                                name=\"{$comment_body["commentID"]}_dislike\" onclick=\"commentDislike({$comment_body["commentID"]})\"> Dislike </button>
+                                <p id=\"dislike_count{$comment_body["commentID"]}\" class=\"mb-0\"> Dislikes: ".$comment_body["Dislikes"]."</p></div>";
+                                
                                 ?>
+                                <input type="hidden" id="forum_post_id" name="forumPostValue" value="<?php echo $post_id?>">
+                                <input type="hidden" id="updatePostId<?php echo $comment_body["commentID"]?>" name="updatePostId" value="">
+                                <input type="hidden" id="updateAction<?php echo $comment_body["commentID"]?>" name="updateAction" value="">
+                                <input type="hidden" id="updateAmount<?php echo $comment_body["commentID"]?>" name="updateAmount" value="">
+                                </form>            
                             </li>    
                         <!-- Display comments dynamically using JavaScript -->
                     </ul>
@@ -185,6 +206,94 @@
             </div>
         </div>
         <!-- End Footer -->
+        <script>
+            let is_liked = false;
+            let is_disliked = false;
+            function forumLike(forum_post_id){
+                let like_value = Number(document.getElementById("like_count".concat(forum_post_id)).innerHTML.substring(8));
+                if(!is_liked){
+                    like_value = like_value + 1;
+                    
+                }
+                else{
+                    like_value = like_value - 1;
+                }
+                is_liked = !is_liked;
+                document.getElementById("like_count".concat(forum_post_id)).innerText = ' Likes: '.concat(String(like_value));
+                updateDatabase(forum_post_id, 'like', like_value);
+
+            }
+            function forumDislike(forum_post_id){
+                let like_value = Number(document.getElementById("dislike_count".concat(forum_post_id)).innerHTML.substring(11));
+                if(!is_disliked){
+                    like_value = like_value + 1;
+                }
+                else{
+                    like_value = like_value - 1;
+                }
+                is_disliked != is_disliked;
+                document.getElementById("dislike_count".concat(forum_post_id)).innerText = ' Dislikes: '.concat(String(like_value));
+
+                updateDatabase(forum_post_id, 'dislike', like_value);
+            }
+
+            function updateDatabase(postID, action, like_value) {
+                    // Update the hidden form fields with the post ID and action
+                    document.getElementById('updatePostId'.concat(postID)).value = postID;
+                    document.getElementById('updateAction'.concat(postID)).value = action;
+                    document.getElementById('updateAmount'.concat(postID)).value = like_value;
+                    console.log('Updated values:', {
+                        postID: document.getElementById('updatePostId' + postID).value,
+                        action: document.getElementById('updateAction' + postID).value,
+                        amount: document.getElementById('updateAmount' + postID).value                        
+                    });
+                    // Submit the form
+                    document.getElementById('likeDislikeForm' + postID).submit();
+                }
+
+            function commentLike(forum_post_id){
+                let like_value = Number(document.getElementById("like_count".concat(forum_post_id)).innerHTML.substring(8));
+                if(!is_liked){
+                    like_value = like_value + 1;
+                    
+                }
+                else{
+                    like_value = like_value - 1;
+                }
+                is_liked = !is_liked;
+                document.getElementById("like_count".concat(forum_post_id)).innerText = ' Likes: '.concat(String(like_value));
+                updateCommentDatabase(forum_post_id, 'like', like_value);
+
+            }
+            function commentDislike(forum_post_id){
+                let like_value = Number(document.getElementById("dislike_count".concat(forum_post_id)).innerHTML.substring(11));
+                if(!is_disliked){
+                    like_value = like_value + 1;
+                }
+                else{
+                    like_value = like_value - 1;
+                }
+                is_disliked != is_disliked;
+                document.getElementById("dislike_count".concat(forum_post_id)).innerText = ' Dislikes: '.concat(String(like_value));
+
+                updateCommentDatabase(forum_post_id, 'dislike', like_value);
+            }
+            function updateCommentDatabase(postID, action, like_value) {
+                    // Update the hidden form fields with the post ID and action
+                    document.getElementById('updatePostId'.concat(postID)).value = postID;
+                    document.getElementById('updateAction'.concat(postID)).value = action;
+                    document.getElementById('updateAmount'.concat(postID)).value = like_value;
+                    console.log('Updated values:', {
+                        postID: document.getElementById('updatePostId' + postID).value,
+                        action: document.getElementById('updateAction' + postID).value,
+                        amount: document.getElementById('updateAmount' + postID).value                        
+                    });
+                    // Submit the form
+                    document.getElementById('commentLikeDislikeForm' + postID).submit();
+                }
+
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>

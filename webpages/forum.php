@@ -43,9 +43,6 @@
         <!-- Content -->
         <div class="row m-2">
             <div class="col">
-                <form>
-                    <input class="form-control" type="text" placeholder="Search">
-                </form>
             </div>
             <div class="d-flex justify-content-end col">
                 <button type="button" class="btn-secondary btn" data-bs-toggle="modal" data-bs-target="#forumPost"> +Create </button>
