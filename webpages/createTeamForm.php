@@ -38,12 +38,14 @@
         include('header.php');
         ?>
 
-        <h1 class="center">Update Team</h1>
+        <h1 class="center">Create Team</h1>
         <div class="container">
         <div class="left-div">
-        <form action="/updateTeam" method="post">
-            <label for="teamName">Team Name To Update:</label>
-            <input type="text" id="teamName" name="teamName"><br>
+        <form action="/createTeam" method="post">
+            <div class="d-flex row m-4">
+                    <label for="teamName-input" class="form-label"> Team Name </label>
+                    <input type="username" class="form-control" id="teamName-input" name="teamName" required>
+            </div>
             <label for="pokemon1">Pokemon 1:</label>
             <select id="pokemon1" name="pokemon1" size="5" required>
                 <?php
@@ -100,19 +102,7 @@
             <input type="submit" value="Submit" name="addBtn">
         </form>
         </div>
-        <div class="right-div">
-            <?php
-                foreach($team as $t) { ?>
-                    <h2><?= $t['TeamName'] ?></h2>
-                    <p>Pokemon 1: <?= $t['Pokemon1'] ?></p>
-                    <p>Pokemon 2: <?= $t['Pokemon2'] ?></p>
-                    <p>Pokemon 3: <?= $t['Pokemon3'] ?></p>
-                    <p>Pokemon 4: <?= $t['Pokemon4'] ?></p>
-                    <p>Pokemon 5: <?= $t['Pokemon5'] ?></p>
-                    <p>Pokemon 6: <?= $t['Pokemon6'] ?></p>
-            <?php
-            } ?>
-        </div>
+        
         </div>
         
 

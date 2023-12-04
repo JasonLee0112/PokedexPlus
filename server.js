@@ -17,7 +17,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        maxAge: 10000 // Set the maximum age of the session to one hour (in milliseconds)
+        maxAge: 100000 
       }
   }));
 
@@ -170,6 +170,10 @@ app.get('/forum', (req, res) => {
 
 app.get('/team', (req, res) => {
     let scriptPath = "./webpages/team.php";
+    let userID = req.session.userID;
+    if (!userID){
+        res.redirect('/accountloginsignup');
+    }
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
@@ -186,6 +190,10 @@ app.get('/team', (req, res) => {
 
 app.get('/pokemon', (req, res) => {
     let scriptPath = "./webpages/pokemon.php";
+    let userID = req.session.userID;
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
@@ -357,6 +365,12 @@ app.post('/addPokemon', (req, res) => {
 app.post('/updateTeam', (req, res) => {
     let createTeamScriptPath = "./webpages/updateTeam.php";
     console.log("I am starting to update team")
+    let userID = req.session.userID;
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
+    let teamID = req.body.teamName;
+    console.log(teamID, userID);
     let pmon1 = req.body.pokemon1;
     let pmon2 = req.body.pokemon2;
     let pmon3 = req.body.pokemon3;
@@ -365,7 +379,7 @@ app.post('/updateTeam', (req, res) => {
     let pmon6 = req.body.pokemon6;
     console.log(pmon1, pmon2, pmon3, pmon4, pmon5, pmon6);
 
-    const phpProcess = spawn('php', [createTeamScriptPath, pmon1, pmon2, pmon3, pmon4, pmon5, pmon6]);
+    const phpProcess = spawn('php', [createTeamScriptPath, pmon1, pmon2, pmon3, pmon4, pmon5, pmon6, teamID, userID]);
     let checkPokemon= "";
     console.log("I ran updateTeam");
     phpProcess.stdout.on('data', (data) => {
@@ -373,7 +387,93 @@ app.post('/updateTeam', (req, res) => {
         checkPokemon += output;
         if(checkPokemon.includes("Successful updated team")){
             console.log("Successful updated team")
+            // let linkTeamToAccountPath = "./webpages/linkTeamToAccount.php";
+            // const phpProcess2 = spawn('php', [linkTeamToAccountPath, teamID, userID]);
+            // phpProcess2.stdout.on('data', (data) => {
+            //     const output = data.toString().trim();
+            //     checkPokemon += output;
+            //     if(checkPokemon.includes("Successful updated team")){
+                    res.redirect("/team");
+            //     }
+            // });
+        }
+        else if(checkPokemon.includes("Did not update team")){
+            console.log("Did not update team");
             res.redirect("/team");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/team");
+        }
+    });
+});
+
+
+
+app.get('/createTeamForm', (req, res) => {
+    let scriptPath = "./webpages/createTeamForm.php";
+    let userID = req.session.userID;
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
+    const phpProcess = spawn('php', [scriptPath]);
+    phpProcess.stdout.on('data', (data) => {
+        res.write(data.toString());
+    });
+
+    phpProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    phpProcess.on('close', () => {
+        res.end();
+    });
+});
+
+app.post('/createTeam', (req, res) => {
+    let createTeamScriptPath = "./webpages/createTeam.php";
+    console.log("I am starting to create team")
+    let userID = req.session.userID;
+    if(!userID){
+        res.redirect('/accountloginsignup')
+    }
+    let teamID = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < 16; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        teamID += characters.charAt(randomIndex);
+    }
+    console.log(teamID, userID);
+    let teamName = req.body.teamName;
+    let pmon1 = req.body.pokemon1;
+    let pmon2 = req.body.pokemon2;
+    let pmon3 = req.body.pokemon3;
+    let pmon4 = req.body.pokemon4;
+    let pmon5 = req.body.pokemon5;
+    let pmon6 = req.body.pokemon6;
+    console.log(pmon1, pmon2, pmon3, pmon4, pmon5, pmon6);
+
+    const phpProcess = spawn('php', [createTeamScriptPath, pmon1, pmon2, pmon3, pmon4, pmon5, pmon6, teamID, teamName]);
+    let checkPokemon= "";
+    console.log("I ran createTeam");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful created team")){
+            console.log("Successful created team")
+            let linkTeamToAccountPath = "./webpages/linkTeamToAccount.php";
+            const phpProcess2 = spawn('php', [linkTeamToAccountPath,userID, teamID ]);
+            console.log("I ran link team to account");
+            let linkResult = "";
+            phpProcess2.stdout.on('data', (data) => {
+                const output = data.toString().trim();
+                linkResult += output;
+                if(linkResult.includes("Successful Account Link")){
+                    console.log("Successful Account Link");
+                    res.redirect("/team");
+                }
+            });
         }
         else if(checkPokemon.includes("Did not update team")){
             console.log("Did not update team");

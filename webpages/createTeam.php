@@ -6,7 +6,7 @@
 
     try{
         $db = new PDO($dsn, $username, $password); 
-        $query = 'UPDATE PokemonTeam SET Pokemon1=:Pokemon1, Pokemon2=:Pokemon2, Pokemon3=:Pokemon3, Pokemon4=:Pokemon4, Pokemon5=:Pokemon5, Pokemon6=:Pokemon6 WHERE teamName=:teamName';
+        $query = 'INSERT INTO PokemonTeam(teamID,TeamName,Pokemon1,Pokemon2,Pokemon3,Pokemon4,Pokemon5,Pokemon6) VALUES(:teamID,:teamName,:P1, :P2, :P3, :P4,:P5,:P6)';
 
         $statement = $db->prepare($query);
         $pmon1 = $argv[1];
@@ -15,18 +15,20 @@
         $pmon4 = $argv[4];
         $pmon5 = $argv[5];
         $pmon6 = $argv[6];
-        $teamName = $argv[7];
-        $userID = $argv[8];
+        $teamID = $argv[7];
+        $teamName = $argv[8];
 
-        $statement->bindValue(':Pokemon1', $pmon1);
-        $statement->bindValue(':Pokemon2', $pmon2);
-        $statement->bindValue(':Pokemon3', $pmon3);
-        $statement->bindValue(':Pokemon4', $pmon4);
-        $statement->bindValue(':Pokemon5', $pmon5);
-        $statement->bindValue(':Pokemon6', $pmon6);
+        $statement->bindValue(':teamID', $teamID);
         $statement->bindValue(':teamName', $teamName);
+        $statement->bindValue(':P1', $pmon1);
+        $statement->bindValue(':P2', $pmon2);
+        $statement->bindValue(':P3', $pmon3);
+        $statement->bindValue(':P4', $pmon4);
+        $statement->bindValue(':P5', $pmon5);
+        $statement->bindValue(':P6', $pmon6);
+       
         $statement->execute();
-        echo "Successful updated team";
+        echo "Successful created team";
     }
     catch (PDOException $e){
         $error_message = $e->getMessage();

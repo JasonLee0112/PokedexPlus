@@ -22,7 +22,8 @@
                             Create
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="team">Team</a></li>
+                            <li><a class="dropdown-item" href="team">Update Team</a></li>
+                            <li><a class="dropdown-item" href="createTeamForm">Create Team</a></li>
                             <li><a class="dropdown-item" href="pokemon">Pokemon</a></li>
                         </ul>
                         </li>
