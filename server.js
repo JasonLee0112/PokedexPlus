@@ -145,6 +145,8 @@ app.get('/forum', (req, res) => {
     });
 });
 
+
+
 app.get('/team', (req, res) => {
     let scriptPath = "./webpages/team.php";
     const phpProcess = spawn('php', [scriptPath]);
@@ -208,19 +210,42 @@ app.get('/sign-in', (req,res) => {
         res.end();
     });
 })
-
+app.get('/test', (req,res)=> {
+    console.log('test log');
+    let scriptPath ="./webpages/test.php";
+    const phpProcess = spawn('php',[scriptPath]);
+    let authenticateResult= "";
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        authenticateResult += output;
+        console.log(authenticateResult);
+    });
+    res.end();
+})
+app.get('/shutdown', (req,res)=> {
+    console.log('test log');
+    let scriptPath ="./webpages/shutdown.php";
+    const phpProcess = spawn('php',[scriptPath]);
+    let authenticateResult= "";
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        authenticateResult += output;
+        console.log(authenticateResult);
+    });
+    res.end();
+})
 app.post('/authenticate', (req,res) => {
     let scriptPath = "./webpages/authenticate.php";
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    console.log(username, email, password);
+    // console.log(username, email, password);
     const phpProcess = spawn('php', [scriptPath,email,password,username]);
     let authenticateResult = "";
-    console.log("authenticate");
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         authenticateResult += output;
+        console.log(authenticateResult);
         if(authenticateResult.includes("Invalid username, email, or password")){
             console.log("authentication failed")
             res.redirect("/sign-in");
@@ -230,7 +255,7 @@ app.post('/authenticate', (req,res) => {
         console.error(`stderr: ${data}`);
     });
     console.log("authentication success");
-    res.redirect("/home");
+    res.redirect("/test");
 })
 
 app.post('/addPokemon', (req, res) => {
