@@ -17,13 +17,12 @@
         $statement->bindValue(':email', $email);
         $statement->bindValue(':username', $username);
         $statement->bindValue(':password', $password);
-
         $statement->execute();
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Execute the query
-        $statement->execute();
+       
 
         // Check if a user with the provided credentials exists
         echo 'user fetch';
