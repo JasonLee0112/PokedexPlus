@@ -229,7 +229,7 @@ app.post('/authenticate', (req,res) => {
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    // res.end();
+    res.end();
 })
 
 app.post('/addPokemon', (req, res) => {

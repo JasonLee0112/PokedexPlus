@@ -27,14 +27,14 @@ session_start();
         // Check if a user with the provided credentials exists
         // echo 'user fetch';
         // $user = $statement->fetch(PDO::FETCH_ASSOC);
-        var_dump($user);
-        // if ($user) {
-        //     // Authentication successful
-        //     $_SESSION['user_id'] = $user['userId']; // Assuming 'id' is the user's unique identifier in the database
-        //     header('Location: landing_page.php'); // Redirect to the dashboard or another protected page
-        //     // echo 'Valid username or password';
-        //     exit();
-        // }
+        // var_dump($user);
+        if ($user) {
+            // Authentication successful
+            $_SESSION['user_id'] = $user['userID']; // Assuming 'id' is the user's unique identifier in the database
+            header('Location: landing_page.php'); // Redirect to the dashboard or another protected page
+            // echo 'Valid username or password';
+            exit();
+        }
         // } else {
         //     // Authentication failed
         //     echo 'Invalid username or password';
