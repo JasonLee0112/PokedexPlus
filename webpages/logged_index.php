@@ -64,7 +64,7 @@
                     </ul>
                 </div>
                 <div class="justify-content-end nav-item">
-                    <a class="nav-link button" href="login">Sign-out</a>
+                    <a class="nav-link button" href="accountloginsignup">Sign-out</a>
                 </div>
             </div>
         </div>
