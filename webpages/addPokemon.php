@@ -4,28 +4,44 @@
     $password = 'Fall2023';
     $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
 
-    $db = new PDO($dsn, $username, $password);
-    $name_query = "SELECT `Name` FROM `Pokemon`";
-    $statement = $db->prepare($name_query);
-    $statement->execute();
-    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-    
-    global $db;
-    $query = "insert into Pokemon values (:pname, :hp, :attack, :defense, :spattack, :spdefense, :speed, :ability, :type1, :type2 )";
-
-    if(in_array($pname, $results) == false){
+    try{
+        $db = new PDO($dsn, $username, $password); 
+        $query = 'INSERT INTO Pokemon(PokeName, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed, Abilities, Types, Moves) VALUES(:PokeName, :HP, :Attack, :Defense, :SpecialAttack, :SpecialDefense, :Speed, :Abilities, :Types, :Moves);';
         $statement = $db->prepare($query);
-        $statement->bindValue(':pname', $pname);
-        $statement->bindValue(':hp', $hp);
-        $statement->bindValue(':attack', $attack);
-        $statement->bindValue(':defense', $defense);
-        $statement->bindValue(':spattack', $spattack);
-        $statement->bindValue(':spdefense', $spdefense);
-        $statement->bindValue(':speed', $speed);
-        $statement->bindValue(':ability', $ability);
-        $statement->bindValue(':type1', $type1);
-        $statement->bindValue(':type2', $type2);
+        $pname = $argv[1];
+        $hp = $argv[2];
+        $attack = $argv[3];
+        $defense = $argv[4];
+        $spattack = $argv[5];
+        $spdefense = $argv[6];
+        $speed = $argv[7];
+        $ability = $argv[8];
+        $type1 = $argv[9];
+        $type2 = $argv[10];
+        $type = array($type1, $type2);
+        $finalType = implode(', ', $type);
+
+        $statement->bindValue(':PokeName', $pname);
+        $statement->bindValue(':HP', $hp);
+        $statement->bindValue(':Attack', $attack);
+        $statement->bindValue(':Defense', $defense);
+        $statement->bindValue(':SpecialAttack', $spattack);
+        $statement->bindValue(':SpecialDefense', $spdefense);
+        $statement->bindValue(':Speed', $speed);
+        $statement->bindValue(':Abilities', $ability);
+        $statement->bindValue(':Types', $finalType);
+        $statement->bindValue(':Moves', "None");
         $statement->execute();
-        $statement->closeCursor();
-}
+        echo "Pokemon Added";
+    }
+    catch (PDOException $e){
+        $error_message = $e->getMessage();
+        echo "PDO failed";
+    }
+    catch (Exception $e){
+        $error_message = $e ->getMessage();
+        echo "Another exception";
+        echo "<p> Not connection error!: $error_message </p>";
+    };
+
 ?>

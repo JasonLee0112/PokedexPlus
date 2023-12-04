@@ -204,8 +204,38 @@ app.post('/addPokemon', (req, res) => {
     let ability = req.body.ability;
     let type1 = req.body.type1;
     let type2 = req.body.type2;
+    console.log(pname, hp, attack, defense, spattack, spdefense, speed, ability, type1, type2);
 
     const phpProcess = spawn('php', [createPokemonScriptPath, pname, hp, attack, defense, spattack, spdefense, speed, ability, type1, type2]);
+    let checkPokemon= "";
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Pokemon Added")){
+            console.log("Successful add to Pokemon")
+            res.redirect("/pokedex");
+        }
+        else if(checkPokemon.includes("Pokemon Not Added")){
+            console.log("Did not add Pokemon");
+            res.redirect("/pokemon");
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/pokemon");
+        }
+        else if(checkPokemon.includes("SQL failed")){
+            console.log("SQL failed");
+            res.redirect("/pokemon");
+        }
+        else if(checkPokemon.includes("Another exception")){
+            console.log("Another exception");
+            res.redirect("/pokemon");
+        }
+        else if(checkPokemon.includes("This is the Probem")){
+            console.log("This is the problem");
+            res.redirect("/pokemon");
+        }
+    });
 });
 
 
