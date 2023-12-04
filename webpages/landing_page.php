@@ -14,8 +14,11 @@
 
     try {
         $db = new PDO($dsn, $username, $password);
+        $current_date = date("Y-m-d");
+        $query = "SELECT Pokemon.PokeName, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed FROM Pokemon, 'Daily Pokemon' 
+        WHERE (SELECT PokeName FROM 'Daily Pokemon' WHERE date = $current_date) = Pokemon.PokeName";
+        
         // echo "<p> connected! <p>";
-
     }
     catch (PDOException $e){
         $error_message = $e->getMessage();

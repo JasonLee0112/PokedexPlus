@@ -75,9 +75,40 @@
         <!-- End Header -->
 
         <!-- Content -->
-        <div class="row">
-            <div class="d-flex justify-content-start col-4 m-2">
+        <div class="row m-2">
+            <div class="d-flex justify-content-start col-4 me-2">
                 <input type="text" class="form-control" id="pokemon-searcher" placeholder="Search">
+            </div>
+            <div class="d-flex justify-content-start col-6 ms-2">
+                <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <button class="btn" id="toggle-sort-name"> Name </button>
+                        </th>
+                        <th>
+                            <button class="btn" id="toggle-sort-HP"> HP </button>
+                        </th>
+                        <th>
+                            <button class="btn" id="toggle-sort-Attack"> Attack </button>
+                        </th>
+                        <th>
+                            <button class="btn" id="toggle-sort-Defense"> Defense </button>
+                        </th>
+                        <th>
+                            <button class="btn" id="toggle-sort-SpAtk"> Special Attack </button>
+                        </th>
+                        <th>
+                            <button class="btn"  id="toggle-sort-SpDef"> Special Defense </button>
+                        </th>
+                        <th>
+                            <button class="btn" id="toggle-sort-Speed"> Speed </button>
+
+                        </th>
+                    </tr>
+                </thead>
+
+                </table>
             </div>
         </div>
         <div class="p-2">
@@ -217,6 +248,8 @@
                     ."</script>";
         ?>
         <script>
+            let sortProperty = "PokeName";
+            let ascending = true;
             
             document.addEventListener('DOMContentLoaded', function () {
                 const itemsList = document.getElementById('pokemon-list');
@@ -225,7 +258,6 @@
                 let allItems = [];
                 let filteredItems = [];
                 
-                console.log(typeof pokemonData);
                 allItems = Object.values(pokemonData);
                 filteredItems = allItems;
 
@@ -238,9 +270,9 @@
                 function updateItems() {
                     const startIndex = (currentPage - 1) * itemsPerPage;
                     const endIndex = startIndex + itemsPerPage;
-                    const displayedItems = filteredItems.slice(startIndex, endIndex);
-                    
-                    console.log(typeof filteredItems)
+                    const sortedItems = sortItem(filteredItems, sortProperty, ascending);
+                    const displayedItems = sortedItems.slice(startIndex, endIndex);
+
                     // Update the items list
                     itemsList.innerHTML = displayedItems.map(item => (
                         `<div id="${item.FixedName}" class="card mb-2">
@@ -321,7 +353,213 @@
                     currentPage = 1; // Reset to the first page when searching
                     updateItems();
                 });
+                
+
+                document.getElementById("toggle-sort-name").addEventListener('click', function(){
+                    sortProperty = "PokeName";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-name");
+                    if (button.innerHTML === "Name"){
+                        ascending = true;
+                        button.innerHTML = "Name &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(ascending){
+                            button.innerHTML = "Name &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "Name &#x25B2;";
+                        }
+                    }
+                    updateItems();
+                });
+                document.getElementById("toggle-sort-HP").addEventListener('click', function(){
+                    sortProperty = "HP";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-HP");
+                    if (button.innerHTML === "HP"){
+                        ascending = false;
+                        button.innerHTML = "HP &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(!ascending){
+                            button.innerHTML = "HP &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "HP &#x25B2;";
+                            
+                        }
+                    }
+                    updateItems();                
+                });
+                document.getElementById("toggle-sort-Attack").addEventListener('click', function(){
+                    sortProperty = "Attack";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-Attack");
+                    if (button.innerHTML === "Attack"){
+                        ascending = false;
+                        button.innerHTML = "Attack &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(!ascending){
+                            button.innerHTML = "Attack &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "Attack &#x25B2;";
+                            
+                        }
+                    }
+                    updateItems();                
+                });document.getElementById("toggle-sort-Defense").addEventListener('click', function(){
+                    sortProperty = "Defense";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-Defense");
+                    if (button.innerHTML === "Defense"){
+                        ascending = false;
+                        button.innerHTML = "Defense &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(!ascending){
+                            button.innerHTML = "Defense &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "Defense &#x25B2;";
+                            
+                        }
+                    }
+                    updateItems();                
+                });document.getElementById("toggle-sort-SpAtk").addEventListener('click', function(){
+                    sortProperty = "SpecialAttack";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-SpAtk");
+                    if (button.innerHTML === "Special Attack"){
+                        ascending = false;
+                        button.innerHTML = "Special Attack &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(!ascending){
+                            button.innerHTML = "Special Attack &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "Special Attack &#x25B2;";
+                            
+                        }
+                    }
+                    updateItems();                
+                });document.getElementById("toggle-sort-SpDef").addEventListener('click', function(){
+                    sortProperty = "SpecialDefense";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-SpDef");
+                    if (button.innerHTML === "Special Defense"){
+                        ascending = false;
+                        button.innerHTML = "Special Defense &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(!ascending){
+                            button.innerHTML = "Special Defense &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "Special Defense &#x25B2;";
+                            
+                        }
+                    }
+                    updateItems();                
+                });document.getElementById("toggle-sort-Speed").addEventListener('click', function(){
+                    sortProperty = "Speed";
+                    resetButtons(sortProperty);
+                    let button = document.getElementById("toggle-sort-Speed");
+                    if (button.innerHTML === "Speed"){
+                        ascending = false;
+                        button.innerHTML = "Speed &#x25BC;";
+                    }
+                    else{
+                        toggleSort();
+                        if(!ascending){
+                            button.innerHTML = "Speed &#x25BC;";
+                        }
+                        else{
+                            button.innerHTML = "Speed &#x25B2;";
+                            
+                        }
+                    }
+                    updateItems();                
+                });
+
+                function sortItem(items, sortBy, ascending){
+                    return items.sort((a, b) => {
+                        const a_value = a[sortBy];
+                        const b_value = b[sortBy];
+
+                        if (typeof a_value === 'string'){
+                            return ascending ? a_value.localeCompare(b_value) : b_value.localeCompare(a_value);
+                        }
+                        else{
+                            return ascending ? a_value - b_value : b_value - a_value;
+                        }
+                    })
+                }
+                let button_array = ["toggle-sort-name", "toggle-sort-HP", "toggle-sort-Attack", "toggle-sort-Defense",
+                "toggle-sort-SpAtk", "toggle-sort-SpDef", "toggle-sort-Speed"];
+                let button_name = ["PokeName", "HP", "Attack", "Defense", "Special Attack", "Special Defense", "Speed"];
+
+                function resetButtons(non_reset){
+                    for (let index = 0; index < button_array.length; ++index){                        
+                        if(non_reset === "PokeName"){
+                            if (index === 0){
+                                continue;
+                            }
+                        }
+                        else if(non_reset === "HP"){
+                            if (index === 1){
+                                continue;
+                            }
+                        }
+                        else if(non_reset === "Attack"){
+                            if (index === 2){
+                                continue;
+                            }
+                        }
+                        else if(non_reset === "Defense"){
+                            if (index === 3){
+                                continue;
+                            }
+                        }
+                        else if(non_reset === "SpecialAttack"){
+                            if (index === 4){
+                                continue;
+                            }
+                        }
+                        else if(non_reset === "SpecialDefense"){
+                            if (index === 5){
+                                continue;
+                            }
+                        }
+                        else if(non_reset === "Speed"){
+                            if (index === 6){
+                                continue;
+                            }
+                        }
+                        let button = document.getElementById(button_array[index]);
+                        if(index === 0){
+                            button.innerHTML = "Name";
+                        }
+                        else{
+                            button.innerHTML = button_name[index];
+                        }
+                    }
+                }
+
+                function toggleSort(){
+                    ascending = !ascending;
+                }
             });
+            
         </script>
         <!-- End Content -->
         
