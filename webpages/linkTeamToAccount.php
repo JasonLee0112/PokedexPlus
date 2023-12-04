@@ -6,16 +6,16 @@
 
     try{
         $db = new PDO($dsn, $username, $password); 
-        $query = 'INSERT INTO pokemonTeam_belongsTo_Account(userID, teamID) VALUES( :userid, :teamid);';
+        $query = 'INSERT INTO pokemonTeam_belongsTo_Account(userID, teamID) VALUES( :userID, :teamID);';
 
         $statement = $db->prepare($query);
 
-        $teamID = $argv[1];
-        $userID = $argv[2];
+        $userID = $argv[1];
+        $teamID = $argv[2];
 
-       
-        $statement2->bindValue(':teamID', $teamID);
-        $statement2->bindValue(':userID', $userID);
+        $statement->bindValue(':userID', $userID);
+        $statement->bindValue(':teamID', $teamID);
+        
         $statement->execute();
         echo "Successful Account Link";
     }
