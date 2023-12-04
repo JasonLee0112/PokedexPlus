@@ -6,7 +6,7 @@
 
     try{
         $db = new PDO($dsn, $username, $password); 
-        $query = 'UPDATE PokemonTeam SET Pokemon1=:Pokemon1, Pokemon2=:Pokemon2, Pokemon3=:Pokemon3, Pokemon4=:Pokemon4, Pokemon5=:Pokemon5, Pokemon6=:Pokemon6, teamID=:teamID WHERE userID=:userID';
+        $query = 'UPDATE PokemonTeam SET Pokemon1=:Pokemon1, Pokemon2=:Pokemon2, Pokemon3=:Pokemon3, Pokemon4=:Pokemon4, Pokemon5=:Pokemon5, Pokemon6=:Pokemon6, teamID=:teamID, userID=:userID';
 
         $statement = $db->prepare($query);
         $pmon1 = $argv[1];
