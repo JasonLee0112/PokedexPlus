@@ -74,7 +74,7 @@ app.post('/sign-up', (req, res) => {
                 const output = data.toString().trim();
                 console.log(output);
             });
-            res.redirect("/login")
+            res.redirect("/accountloginsignup")
         }
     });
        

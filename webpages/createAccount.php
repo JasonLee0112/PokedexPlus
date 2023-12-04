@@ -10,11 +10,12 @@
             $query = 'INSERT INTO Account(email, password, username, userID, is_a_admin) VALUES(:email, :password, :username, :userid, :isaAdmin);';
             $email = $argv[1];
             $password = $argv[2];
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $username = $argv[3];
             $userID = $argv[4];
             $statement = $db->prepare($query);
             $statement->bindValue(':email', $email);
-            $statement->bindValue(':password', $password);
+            $statement->bindValue(':password', $hashed_password);
             $statement->bindValue(':username', $username);
             $statement->bindValue(':userid', $userID);
             $statement->bindValue(':isaAdmin', 0);
