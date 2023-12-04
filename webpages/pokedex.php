@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+
     <head>
         <?php        
         $servername = 'mysql.cs.virginia.edu';

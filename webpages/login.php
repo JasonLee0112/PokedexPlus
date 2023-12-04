@@ -64,6 +64,8 @@
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
         <button onclick="signOut()">Sign out</button>
 
+        <button onclick="signIn()"> Sign in</button>
+
         <!-- <form>
             <div class="container d-flex justify-content-center mt-5">
                 <div class="card">

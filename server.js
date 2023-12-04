@@ -8,11 +8,15 @@ const path = require('path')
 const express = require('express');
 const { spawn } = require('child_process');
 const app = express();
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
 app.get('/sign-up', (req, res) => {
-    let scriptPath = "./webpages/signup.php";
+  
+    let scriptPath = "./webpages/signuppage.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
         res.write(data.toString());
@@ -29,16 +33,50 @@ app.get('/sign-up', (req, res) => {
 
 app.post('/sign-up', (req, res) => {
     const username = req.body.username;
-    const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
+    const email = req.body.email;
+    const password = req.body.username;
+    const confirmPassword = req.body.username;
+    
+    // do a select in the database based on user name, 
+    // 1. if email already exists then redirect to login page
+    // 2. if it doesnt create the account 
 
     if (password !== confirmPassword) {
         return res.status(400).send('Passwords do not match');
     }
+    let signupCheckScriptPath = "./webpages/signupCheck.php";
+    let createAccountScriptPath = "./webpages/createAccount.php";
+    const phpProcess = spawn('php', [signupCheckScriptPath,email]);
+    let checkEmail= "";
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkEmail += output;
+        if(checkEmail.includes("Email Found")){
+            console.log("redirect to login")
+            res.redirect("/");
+        }
+        else if(checkEmail.includes("Email Not Found")){
+            console.log("email not found");
+            res.redirect("/sign-up");
+        }
+    });
+    
+    // else{
+    //     console.log("end");
+    //     res.end();
+    // }
 
-    // Database Logic
+    // phpProcess.stderr.on('data', (data) => {
+    //     console.error(`stderr: ${data}`);
+    // });
 
-    res.send('Sign-up successful!');
+    // phpProcess.on('close', () => {
+    //     res.end();
+    // });
+
+    // // Database Logic
+
+    
 });
 
 app.get('/home', (req, res) => {
