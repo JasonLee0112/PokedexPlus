@@ -44,14 +44,22 @@
         <!-- Content -->
 
         <div class="container d-flex justify-content-center mt-5">
-            <form action="/sign-up" method="post" class="form-control" style="width: 75%;" onsubmit="return ValidateForm">
+            <form action="/sign-up" method="post" class="form-control" style="width: 75%;" onsubmit="return validateForm()">
                 <div class="d-flex row m-4">
                     <label for="email-input" class="form-label"> Email Address </label>
-                    <input type="email" class="form-control" id="email-input" required>
+                    <input type="email" class="form-control" id="email-input" name="email" required>
                     <div id="emailHelp" class="form-text">
                         example@email.com
                     </div>
                 </div>
+                <div class="d-flex row m-4">
+                    <label for="username-input" class="form-label"> Username </label>
+                    <input type="username" class="form-control" id="username-input" name="username" required>
+                </div>
+
+                
+
+
                 <div class="d-flex row m-4">
                     <label for="password-input" class="form-label"> Password </label>
                     <input type="password" class="form-control" id="password-input" required>
@@ -64,12 +72,12 @@
                     <input type="submit" class="btn btn-primary" value="Sign Up">
                 </div>
 
-
-            </div>
-        </form>
+            </form>
+        </div>
 
         <script>
             function validateForm() {
+                var username = document.getElementById("username-input").value;
                 var password = document.getElementById("password-input").value;
                 var confirmPassword = document.getElementById("confirm-password").value;
 
@@ -79,6 +87,7 @@
                 }
 
                 // Continue with form submission
+                console.log("continue");
                 return true;
             }
         </script>
