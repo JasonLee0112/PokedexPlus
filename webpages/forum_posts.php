@@ -77,7 +77,7 @@
             </div>
         <!-- End Header -->
         <!-- Content -->
-        <div class="container" id="full_forum_post">
+        <div class="container-fluid" id="full_forum_post">
             <div class="row">
                 <div class="col-11">
                 <?php 
@@ -118,21 +118,62 @@
         </div>
 
         <!-- Comments section -->
-        <div class="row m-3">
-            <div class="col-11">
+        <div class="container-fluid" id="comment-section">
+            <div class="row m-3">
+                <div class="col-11">
+                <?php
+                    try{
+                    $comment_query = "SELECT DISTINCT Title, Body, Likes, Dislikes 
+                    FROM (SELECT comment_ID FROM `comment-belongs-to-forum` WHERE forum_Post_ID = $forum_id) AS subquery 
+                    NATURAL JOIN comment;";
+                    $statement = $db->prepare($comment_query);
+                    $statement->execute();
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    // var_dump($result);
+                    }
+                    catch (PDOException $e){
+                        $error_message = $e->getMessage();
+                        echo "<p> Error: $error_message </p>";
+                    }
+                    catch (Exception $e){
+                        $error_message = $e ->getMessage();
+                        echo "<p> Not connection error!: $error_message </p>";
+                    };
+                ?>
                 <h2>Comments</h2>
-                <ul id="commentsList">
-                    <!-- Display comments dynamically using JavaScript -->
-                </ul>
+                    <?php foreach ($result as $comment_body){
+                        ?>
+                        <ul class="list-group" id="commentsList">
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold"><?php echo $comment_body["Title"] ?></div>
+                                    <?php echo $comment_body["Body"] ?>
+                                </div>
+                                <?php
+                                    echo "<div class=\"m-3 d-flex align-items-center\">
+                                    <button class=\"btn btn-primary btn-sm me-2\" onclick=\"send_like()\"> Like </button> 
+                                    <p class=\"mb-0 pe-2\"> Likes: ".$comment_body["Likes"]."</p>
+                                    <button class=\"btn btn-warning btn-sm me-2\" onclick=\"send_dislike()\"> Dislike </button>
+                                    <p class=\"mb-0\"> Dislikes: ".$comment_body["Dislikes"]."</p></div>";  
+                                ?>
+                            </li>    
+                        <!-- Display comments dynamically using JavaScript -->
+                    </ul>
+                    <?php
+                    }
+                    ?>
+                </div>
             </div>
-        </div>
 
-        <div class="row m-3">
-            <div class="col-11">
-                <form id="commentForm">
-                    <textarea id="commentInput" placeholder="Add a comment"></textarea>
-                    <button type="submit">Submit</button>
-                </form>
+            <div class="row m-3">
+                <div class="col-11">
+                    <form class="form-control" action="/process_comment" method="POST" id="commentForm">
+                        <input class="form-control m-2" name="commentTitle" placeholder="Add a title"></input>
+                        <textarea class="form-control m-2" name="commentInput" placeholder="Add a comment"></textarea>
+                        <input type="hidden" name="currentForumID" value="<?php echo $forum_id?>"></input>
+                        <br><button class="btn btn-primary" type="submit">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
         <!-- End Content -->

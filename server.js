@@ -386,6 +386,35 @@ app.post('/updateTeam', (req, res) => {
     });
 });
 
+app.post('/process_comment', (req, res) => {
+    let process_comment_path = "./webpages/process_comments.php";
+    console.log("I am starting to Insert")
+    let comment_title = req.body.commentTitle;
+    let comment_body = req.body.commentInput;
+    let parent_forum = req.body.currentForumID;
+
+    const phpProcess = spawn('php', [process_comment_path, comment_title, comment_body, parent_forum]);
+    let checkPokemon= "";
+    console.log("I ran updateTeam");
+    phpProcess.stdout.on('data', (data) => {
+        const output = data.toString().trim();
+        checkPokemon += output;
+        if(checkPokemon.includes("Successful insert")){
+            console.log("Successful insert")
+            res.redirect("/forum/post?forumId=".concat(parent_forum));
+        }
+        else if(checkPokemon.includes("Did not insert")){
+            console.log("Did not insert");
+            res.redirect("/forum/post?forumId=".concat(parent_forum));
+        }
+        else if(checkPokemon.includes("PDO failed")){
+            console.log("PDO failed");
+            res.redirect("/forum/post?forumId=".concat(parent_forum));
+        }
+    });
+  });
+
+
 const server = http.createServer(app);
 
 server.listen(port, hostname, () => {
