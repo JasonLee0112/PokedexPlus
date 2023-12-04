@@ -12,17 +12,16 @@ session_start();
         $email = $argv[1];
         $password = $argv[2];
         $username = $argv[3];
-        $checkQuery = 'SELECT * FROM Account WHERE (email=:email OR username=:username) AND password=:password';
+        $checkQuery = 'SELECT * FROM Account WHERE (email=:email OR username=:username)';
         $statement = $db->prepare($checkQuery);
         $statement->bindValue(':email', $email);
         $statement->bindValue(':username', $username);
-        $statement->bindValue(':password', $password);
         $statement->execute();
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
    
-        if ($user) {
+        if ($user && password_verify($password, $user['password'])) {
             // Authentication successful
             $_SESSION['user_id'] = $user['userID']; // Assuming 'id' is the user's unique identifier in the database
             // echo $_SESSION['user_id'];
