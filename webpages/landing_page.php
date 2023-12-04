@@ -15,9 +15,30 @@
     try {
         $db = new PDO($dsn, $username, $password);
         $current_date = date("Y-m-d");
-        $query = "SELECT Pokemon.PokeName, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed FROM Pokemon, 'Daily Pokemon' 
-        WHERE (SELECT PokeName FROM 'Daily Pokemon' WHERE date = $current_date) = Pokemon.PokeName";
+        $query1 = "SELECT pokemon_name FROM Daily_Pokemon WHERE date = '$current_date' ";
+        $daily_statement = $db->prepare($query1);
+        $daily_statement->execute();
+        $daily_pokemon_result = $daily_statement->fetchAll(PDO::FETCH_ASSOC);
+        // echo "daily_pokemon: ";
+        // print_r($daily_pokemon_result[0]["pokemon_name"]);
+
+        $daily_pokemon = $daily_pokemon_result[0]["pokemon_name"];
+        $query2 = "SELECT DISTINCT Pokemon.PokeName, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed FROM Pokemon, Daily_Pokemon 
+        WHERE Pokemon.PokeName = '$daily_pokemon'";
         
+        $pokemon_statement = $db->prepare($query2);
+        $pokemon_statement->execute();
+        $pokemon_data = $pokemon_statement->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($pokemon_data);
+
+        $query3 = "SELECT Title, Body, Likes, Dislikes,
+        IF(dislikes = 0, likes, likes / dislikes) AS like_dislike_ratio
+        FROM ForumPost ORDER BY like_dislike_ratio DESC, likes DESC LIMIT 3";
+        $forum_statement = $db->prepare($query3);
+        $forum_statement->execute();
+        $forum_posts = $forum_statement->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($forum_posts);
+
         // echo "<p> connected! <p>";
     }
     catch (PDOException $e){
@@ -105,12 +126,48 @@
             </div>
             <div class="d-flex flex-row">
                 <div class="col border">
-                    <p> Popular Forum Posts: </p>
-                    <!-- Some code to fetch the forum post with the highest likes for the day -->
+                    <p> Most Popular Forum Posts: </p>
+                    <!-- Some code to fetch the forum post with the highest likes/dislike ratio then like count for the day -->
+                    <?php foreach ($forum_posts as $forum_information){
+                        ?>
+                        <div class="card">
+                            <div class="card-body">
+                                <?php
+                                    echo "<a class=\"fs-4\" href=#><b>".$forum_information["Title"]."</b></a><br>";
+                                    $body = $forum_information["Body"];
+                                    if(strlen($body) > 100){
+                                        echo substr($body, 0, 100)."...<br>";
+                                    }
+                                    else{
+                                        echo $body."<br>";
+                                    }
+                                    echo "<br>Likes: ".$forum_information["Likes"];
+                                    echo " Dislikes: ".$forum_information["Dislikes"];
+                                ?>
+                            </div>
+                        </div>
+                        <?php
+                        } 
+                    ?> 
                 </div>
                 <div class="col border">
                     <p> Today's Pokemon: </p>
                     <!-- Some code to randomly fetch a pokemon from the pokedex -->
+                    <div class="card">
+                        <div class="card-body">
+                            <?php echo $pokemon_data[0]["PokeName"];?>
+                            <p class="m-3"> Stats: <br>
+                            <?php 
+                                echo "HP: ".$pokemon_data[0]["HP"];
+                                echo "<br>Attack: ".$pokemon_data[0]["Attack"];
+                                echo "<br>Defense: ".$pokemon_data[0]["Defense"];
+                                echo "<br>Special Attack: ".$pokemon_data[0]["SpecialAttack"];
+                                echo "<br>Special Defense: ".$pokemon_data[0]["SpecialDefense"];
+                                echo "<br>Speed: ".$pokemon_data[0]["Speed"];
+                            ?>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
