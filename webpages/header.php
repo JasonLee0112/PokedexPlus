@@ -1,5 +1,8 @@
 <!-- Header -->
-<div class="navbar navbar-expand-lg bg-body-secondary sticky-top">
+<!DOCTYPE html>
+<html>
+    
+    <div class="navbar navbar-expand-lg bg-body-secondary sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/"><img class="brand-image" src="/uvaball.png"> Pokedex+ </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
@@ -44,9 +47,49 @@
                         </div> -->
 
                     <div class="justify-content-end nav-item">
-                        <a class="nav-link button" href="accountloginsignup">Login/Sign-Up</a>
+                        <a class="nav-link button" href="accountloginsignup">Sign-In/Sign-Up</a>
                     </div>
+                    <div class="justify-content-end nav-item">
+                        <form id="logoutForm" method="post" action="/accountlogout" onsubmit="logout(event)">
+                            <input type="submit" class="btn btn-primary" value="Logout">
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>
         <!-- End Header -->
+        <script>
+            function logout(event) {
+                event.preventDefault(); // Prevent the default form submission behavior
+
+                // Make a POST request to the logout route
+                fetch('/accountlogout', {
+                    method: 'POST',
+                    credentials: 'same-origin', // Include credentials (cookies) in the request
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Logout successful, handle as needed
+                        alert('Logout successful!');
+                        // Redirect to the home page if needed
+                        window.location.href = "/";
+                    } else {
+                        // Logout failed, show the error message
+                        return response.text();
+                    }
+                })
+                .then(errorMessage => {
+                    if (errorMessage) {
+                        alert(errorMessage);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                    // Handle error as needed
+                });
+            }
+        </script>
+
+       
+</html>

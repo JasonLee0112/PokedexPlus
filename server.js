@@ -232,6 +232,24 @@ app.get('/sign-in', (req,res) => {
     });
 })
 
+app.post('/accountlogout', (req,res)=>{
+    const userID = req.session.userID;
+    if (userID){
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Error destroying session:', err);
+                return res.status(500).send('Internal Server Error');
+            }
+            
+            // Logout successful
+            res.status(200).send('Logout successful');
+        });
+    }
+    else{
+        res.status(400).send('Logout Un-successful');
+        
+    }
+})
 
 
 app.post('/authenticate', (req,res) => {
