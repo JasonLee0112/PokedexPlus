@@ -192,6 +192,24 @@ app.get('/login', (req, res) => {
     });
 });
 
+app.post('/addPokemon', (req, res) => {
+    let createPokemonScriptPath = "./webpages/addPokemon.php";
+    let pname = req.body.pname;
+    let hp = req.body.hp;
+    let attack = req.body.attack;
+    let defense = req.body.defense;
+    let spattack = req.body.spattack;
+    let spdefense = req.body.spdefense;
+    let speed = req.body.speed;
+    let ability = req.body.ability;
+    let type1 = req.body.type1;
+    let type2 = req.body.type2;
+
+    const phpProcess = spawn('php', [createPokemonScriptPath, pname, hp, attack, defense, spattack, spdefense, speed, ability, type1, type2]);
+});
+
+
+
 const server = http.createServer(app);
 
 server.listen(port, hostname, () => {
