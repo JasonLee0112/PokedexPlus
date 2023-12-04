@@ -384,15 +384,15 @@ app.post('/updateTeam', (req, res) => {
         checkPokemon += output;
         if(checkPokemon.includes("Successful updated team")){
             console.log("Successful updated team")
-            let linkTeamToAccountPath = "./webpages/linkTeamToAccount.php";
-            const phpProcess2 = spawn('php', [linkTeamToAccountPath, teamID, userID]);
-            phpProcess2.stdout.on('data', (data) => {
-                const output = data.toString().trim();
-                checkPokemon += output;
-                if(checkPokemon.includes("Successful updated team")){
+            // let linkTeamToAccountPath = "./webpages/linkTeamToAccount.php";
+            // const phpProcess2 = spawn('php', [linkTeamToAccountPath, teamID, userID]);
+            // phpProcess2.stdout.on('data', (data) => {
+            //     const output = data.toString().trim();
+            //     checkPokemon += output;
+            //     if(checkPokemon.includes("Successful updated team")){
                     res.redirect("/team");
-                }
-            });
+            //     }
+            // });
         }
         else if(checkPokemon.includes("Did not update team")){
             console.log("Did not update team");
