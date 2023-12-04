@@ -39,7 +39,7 @@
         include('header.php');
         ?>
 
-        <h1>Update Team</h1>
+        <h1 class="center">Update Team</h1>
         <div class="container">
         <div class="left-div">
         <form action="/updateTeam" method="post">
