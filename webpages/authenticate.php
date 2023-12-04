@@ -21,13 +21,7 @@ session_start();
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-        // Execute the query
-       
-
-        // Check if a user with the provided credentials exists
-        // echo 'user fetch';
-        // $user = $statement->fetch(PDO::FETCH_ASSOC);
-        // var_dump($user);
+   
         if ($user) {
             // Authentication successful
             $_SESSION['user_id'] = $user['userID']; // Assuming 'id' is the user's unique identifier in the database
@@ -35,10 +29,10 @@ session_start();
             // echo 'Valid username or password';
             exit();
         }
-        // } else {
-        //     // Authentication failed
-        //     echo 'Invalid username or password';
-        // }
+        else {
+            // Authentication failed
+            echo 'Invalid username or password';
+        }
     }
     
     catch (PDOException $e) {

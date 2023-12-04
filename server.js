@@ -221,7 +221,7 @@ app.post('/authenticate', (req,res) => {
     phpProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         authenticateResult += output;
-        if(authenticateResult.includes("Valid username or password")){
+        if(authenticateResult.includes("Invalid username, email, or password")){
             console.log("authentication failed")
             res.redirect("/sign-in");
         }
@@ -229,7 +229,8 @@ app.post('/authenticate', (req,res) => {
     phpProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
-    res.end();
+    console.log("authentication success");
+    res.redirect("/home");
 })
 
 app.post('/addPokemon', (req, res) => {
