@@ -3,11 +3,18 @@
     <?php
         // echo "Php is processed correctly";
 
-        $servername = 'mysql.cs.virginia.edu';
-        $username = 'rmk9ds';
-        $password = 'Fall2023';
+        // $servername = 'mysql.cs.virginia.edu';
+        // $username = 'rmk9ds';
+        // $password = 'Fall2023';
 
-        $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
+        // $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
+
+        $servername = "localhost";
+        $username = 'root';
+        $password = '';
+        $dbname = 'pokedex_plus';
+    
+        $dsn = "mysql:host=$servername;dbname=$dbname;";
 
 
 
@@ -116,11 +123,13 @@
                     }
             } 
             else {
-                echo "Empty";
+                ?>
+                <p class="center"> No Posts Have been Created Yet </p>
+                <?php
             }
         ?>
         <!-- Footer -->
-        <div class="navbar sticky-bottom bg-body-secondary">
+        <div class="navbar fixed-bottom bg-body-secondary">
             <div class="container-fluid">
                 Footer
             </div>

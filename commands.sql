@@ -1,34 +1,34 @@
 
-CREATE TABLE `rmk9ds_b`.`comment` (`Body` TEXT NOT NULL , `commentID` INT NOT NULL AUTO_INCREMENT , `Dislikes` INT NOT NULL , `Likes` INT NOT NULL , `Title` TEXT NOT NULL , PRIMARY KEY (`commentID`)) ENGINE = InnoDB;
+CREATE TABLE `comment` (`Body` TEXT NOT NULL , `commentID` INT NOT NULL AUTO_INCREMENT , `Dislikes` INT NOT NULL , `Likes` INT NOT NULL , `Title` TEXT NOT NULL , PRIMARY KEY (`commentID`)) ENGINE = InnoDB;
 
-CREATE TABLE `rmk9ds_b`.`comment-belongs-to-forum` (`comment_ID` INT NOT NULL , `forum_post_ID` INT NOT NULL ) ENGINE = InnoDB;
+CREATE TABLE `comment-belongs-to-forum` (`comment_ID` INT NOT NULL , `forum_post_ID` INT NOT NULL ) ENGINE = InnoDB;
 
-CREATE TABLE `rmk9ds_b`.`ForumPost` (`Body` TEXT NOT NULL , `forumPostID` INT NOT NULL AUTO_INCREMENT , `Dislikes` INT NOT NULL , `Likes` INT NOT NULL , `Title` TEXT NOT NULL , PRIMARY KEY (`forumPostID`)) ENGINE = InnoDB;
+CREATE TABLE `ForumPost` (`Body` TEXT NOT NULL , `forumPostID` INT NOT NULL AUTO_INCREMENT , `Dislikes` INT NOT NULL , `Likes` INT NOT NULL , `Title` TEXT NOT NULL , PRIMARY KEY (`forumPostID`)) ENGINE = InnoDB;
 
-CREATE TABLE `rmk9ds_b`.`Item` (`Category` TEXT NOT NULL , `Effect` TEXT NOT NULL , `ItemName` TEXT NOT NULL , PRIMARY KEY (`ItemName`(50))) ENGINE = InnoDB;
+CREATE TABLE `Item` (`Category` TEXT NOT NULL , `Effect` TEXT NOT NULL , `ItemName` TEXT NOT NULL , PRIMARY KEY (`ItemName`(50))) ENGINE = InnoDB;
 
-CREATE TABLE `rmk9ds_b`.`Moves` (`Accuracy` TEXT NOT NULL ,`Category` TEXT NOT NULL , `Effect` TEXT NOT NULL , `Hit Chance` TEXT NOT NULL ,`MoveID` INT NOT NULL , `Name` TEXT NOT NULL , `Power` TEXT NOT NULL , `PP` TEXT NOT NULL , `Type` TEXT NOT NULL ,PRIMARY KEY (`MoveID`)) ENGINE = InnoDB;
+CREATE TABLE `Moves` (`Accuracy` TEXT NOT NULL ,`Category` TEXT NOT NULL , `Effect` TEXT NOT NULL , `Hit Chance` TEXT NOT NULL ,`MoveID` INT NOT NULL , `Name` TEXT NOT NULL , `Power` TEXT NOT NULL , `PP` TEXT NOT NULL , `Type` TEXT NOT NULL ,PRIMARY KEY (`MoveID`)) ENGINE = InnoDB;
 
-CREATE TABLE `rmk9ds_b`.`Pokemon` (`Abilities` TEXT NOT NULL ,`Attack` TEXT NOT NULL , `Defense` TEXT NOT NULL , `HP` INT NOT NULL ,`Moves` TEXT NOT NULL , `PokeName` TEXT NOT NULL , `SpecialAttack` TEXT NOT NULL , `SpecialDefense` TEXT NOT NULL , `Speed` TEXT NOT NULL , `Types` TEXT NOT NULL , PRIMARY KEY (`PokeName`(50))) ENGINE = InnoDB;
+CREATE TABLE `Pokemon` (`Abilities` TEXT NOT NULL ,`Attack` TEXT NOT NULL , `Defense` TEXT NOT NULL , `HP` INT NOT NULL ,`Moves` TEXT NOT NULL , `PokeName` TEXT NOT NULL , `SpecialAttack` TEXT NOT NULL , `SpecialDefense` TEXT NOT NULL , `Speed` TEXT NOT NULL , `Types` TEXT NOT NULL , PRIMARY KEY (`PokeName`(50))) ENGINE = InnoDB;
 
-CREATE TABLE `rmk9ds_b`.`Pokemon Abilities` (`AbilityName` VARCHAR(500) NOT NULL , `Description` Text        NOT NULL ) ENGINE = InnoDB; 
+CREATE TABLE `Pokemon Abilities` (`AbilityName` VARCHAR(500) NOT NULL , `Description` Text        NOT NULL ) ENGINE = InnoDB; 
 
-CREATE TABLE `rmk9ds_b`.`PokemonTeam` (`Pokemon1` TEXT NOT NULL , `Pokemon2` Text        NOT NULL,`Pokemon3` TEXT NOT NULL ,`Pokemon4` TEXT NOT NULL , `Pokemon5` TEXT NOT NULL `Pokemon6` TEXT NOT NULL ,`TeamID` INT NOT NULL, `TeamName` TEXT NOT NULL ,PRIMARY KEY (`TeamID`)) ENGINE = InnoDB;        
-
-
-CREATE TABLE `rmk9ds_b`.`pokemonTeam_belongsTo_Account` (`email` TEXT NOT NULL , `TeamID` INT NOT NULL ) ENGINE = InnoDB; 
-CREATE TABLE `rmk9ds_b`.`Pokemon Type` (`Name` VARCHAR NOT NULL , `Type1` VARCHAR NOT NULL,`Type1` VARCHAR NOT NULL, PRIMARY KEY (`Name`)) ENGINE = InnoDB; 
-
-CREATE TABLE `rmk9ds_b`.`pokemonTeam_belongsTo_team` (`pokemon_name` TEXT NOT NULL , `teamID` INT NOT NULL ) ENGINE = InnoDB; 
-
-CREATE TABLE `rmk9ds_b`.`admin_regulates_user` (`admin_email` TEXT NOT NULL , `user_email` TEXT NOT NULL ) ENGINE = InnoDB; 
-
-CREATE TABLE `rmk9ds_b`.`admin_regulates_forums` (`email` TEXT NOT NULL , `forumPostID` INT NOT NULL ) ENGINE = InnoDB; 
+CREATE TABLE `PokemonTeam` (`Pokemon1` TEXT NOT NULL , `Pokemon2` Text        NOT NULL,`Pokemon3` TEXT NOT NULL ,`Pokemon4` TEXT NOT NULL , `Pokemon5` TEXT NOT NULL `Pokemon6` TEXT NOT NULL ,`TeamID` INT NOT NULL, `TeamName` TEXT NOT NULL ,PRIMARY KEY (`TeamID`)) ENGINE = InnoDB;        
 
 
-CREATE TABLE `rmk9ds_b`.`account_creates_pokemon` (`email` TEXT NOT NULL , `pokemon_name` TEXT NOT NULL ) ENGINE = InnoDB; 
+CREATE TABLE `pokemonTeam_belongsTo_Account` (`email` TEXT NOT NULL , `TeamID` INT NOT NULL ) ENGINE = InnoDB; 
+CREATE TABLE `Pokemon Type` (`Name` VARCHAR NOT NULL , `Type1` VARCHAR NOT NULL,`Type1` VARCHAR NOT NULL, PRIMARY KEY (`Name`)) ENGINE = InnoDB; 
 
-CREATE TABLE `rmk9ds_b`.`Account` (`email` TEXT NOT NULL , `is_a_admin` TINYINT  NOT NULL,`password` TEXT NOT NULL ,`userID` INT NOT NULL , `username` TEXT NOT NULL, PRIMARY KEY (`email`(50))) ENGINE = InnoDB;      
+CREATE TABLE `pokemonTeam_belongsTo_team` (`pokemon_name` TEXT NOT NULL , `teamID` INT NOT NULL ) ENGINE = InnoDB; 
+
+CREATE TABLE `admin_regulates_user` (`admin_email` TEXT NOT NULL , `user_email` TEXT NOT NULL ) ENGINE = InnoDB; 
+
+CREATE TABLE `admin_regulates_forums` (`email` TEXT NOT NULL , `forumPostID` INT NOT NULL ) ENGINE = InnoDB; 
+
+
+CREATE TABLE `account_creates_pokemon` (`email` TEXT NOT NULL , `pokemon_name` TEXT NOT NULL ) ENGINE = InnoDB; 
+
+CREATE TABLE `Account` (`email` TEXT NOT NULL , `is_a_admin` TINYINT  NOT NULL,`password` TEXT NOT NULL ,`userID` INT NOT NULL , `username` TEXT NOT NULL, PRIMARY KEY (`email`(50))) ;      
 
 -- Create new Account
 INSERT INTO Account VALUES 
@@ -114,9 +114,9 @@ WHERE TeamID = teamID;
 END //
 DELIMITER ;
 
-ALTER TABLE `rmk9ds_b`.`Pokemon Abilities`
+ALTER TABLE `Pokemon Abilities`
 ADD CONSTRAINT Check_PokemonAbilities_Description_Length CHECK (CHAR_LENGTH(Description) >= 5);
 
-ALTER TABLE `rmk9ds_b`.`Pokemon`
+ALTER TABLE `Pokemon`
 ADD CONSTRAINT Pokemon_Statistics_Greater_Than_Zero CHECK
 ( HP > 0 AND Attack > 0 AND Defense > 0 AND SpecialAttack > 0 AND SpecialDefense > 0 AND Speed > 0);

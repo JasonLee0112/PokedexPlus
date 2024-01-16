@@ -1,13 +1,19 @@
 
     <head>
         <?php        
-        $servername = 'mysql.cs.virginia.edu';
-            $username = 'rmk9ds';
-            $password = 'Fall2023';
+            // $servername = 'mysql.cs.virginia.edu';
+            // $username = 'rmk9ds';
+            // $password = 'Fall2023';
 
-            $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
+            // $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
 
 
+            $servername = "localhost";
+            $username = 'root';
+            $password = '';
+            $dbname = 'pokedex_plus';
+        
+            $dsn = "mysql:host=$servername;dbname=$dbname;";
 
 
             try {

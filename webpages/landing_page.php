@@ -3,27 +3,34 @@
     <?php
     // echo "Php is processed correctly";
 
-    $servername = 'mysql.cs.virginia.edu';
-    $username = 'rmk9ds';
-    $password = 'Fall2023';
+    // $servername = "sql203.infinityfree.com";
+    // $username = 'if0_35726847';
+    // $password = 'RvgLbPuzZkrF';
+    // $dbname = 'if0_35726847_pokedex_plus';
 
-    $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
+    // $dsn = "mysql:host=$servername;dbname=$dbname;port=3306";
 
 
+    $servername = "localhost";
+    $username = 'root';
+    $password = '';
+    $dbname = 'pokedex_plus';
+
+    $dsn = "mysql:host=$servername;dbname=$dbname;";
 
 
     try {
         $db = new PDO($dsn, $username, $password);
         $current_date = date("Y-m-d");
-        $query1 = "SELECT pokemon_name FROM Daily_Pokemon WHERE date = '$current_date' ";
+        $query1 = "SELECT PokeName FROM DailyPokemon WHERE day = '$current_date' ";
         $daily_statement = $db->prepare($query1);
         $daily_statement->execute();
         $daily_pokemon_result = $daily_statement->fetchAll(PDO::FETCH_ASSOC);
         // echo "daily_pokemon: ";
         // print_r($daily_pokemon_result[0]["pokemon_name"]);
 
-        $daily_pokemon = $daily_pokemon_result[0]["pokemon_name"];
-        $query2 = "SELECT DISTINCT Pokemon.PokeName, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed FROM Pokemon, Daily_Pokemon 
+        $daily_pokemon = $daily_pokemon_result[0]["PokeName"];
+        $query2 = "SELECT DISTINCT Pokemon.PokeName, HP, Attack, Defense, SpecialAttack, SpecialDefense, Speed FROM Pokemon, DailyPokemon 
         WHERE Pokemon.PokeName = '$daily_pokemon'";
         
         $pokemon_statement = $db->prepare($query2);
@@ -38,7 +45,7 @@
         $forum_statement->execute();
         $forum_posts = $forum_statement->fetchAll(PDO::FETCH_ASSOC);
         // print_r($forum_posts);
-
+        
         // echo "<p> connected! <p>";
     }
     catch (PDOException $e){
@@ -70,11 +77,19 @@
                         <h1 class="welcome-page"> Welcome! </h1>
                     </div>
                 </div>
+                <?php if($result) {?>
+                <div class="d-flex flex-row justify-content-xxl-center">
+                    <div class="d-flex flex-column">
+                        <p> Welcome <?php echo $result["username"] ?> </p>
+                    </div>
+                </div>
+                <?php } else {?>
                 <div class="d-flex flex-row justify-content-xxl-center">
                     <div class="d-flex flex-column">
                         <p> Log in or sign-up with the button at the top right </p> 
                     </div>
                 </div>
+                <?php } ?>
                 <div class="d-flex flex-row">
                     <div class="col border">
                         <p> Most Popular Forum Posts: </p>

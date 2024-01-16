@@ -1,10 +1,14 @@
 
 <?php        
-    $servername = 'mysql.cs.virginia.edu';
-        $username = 'rmk9ds';
-        $password = 'Fall2023';
 
-        $dsn = 'mysql:host=mysql01.cs.virginia.edu;dbname=rmk9ds_b';
+        $servername = "localhost";
+        $username = 'root';
+        $password = '';
+        $dbname = 'pokedex_plus';
+
+        $dsn = "mysql:host=$servername;dbname=$dbname;";
+
+
         try {
             $db = new PDO($dsn, $username, $password);
             $query = 'INSERT INTO Account(email, password, username, userID, is_a_admin) VALUES(:email, :password, :username, :userid, :isaAdmin);';

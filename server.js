@@ -1,4 +1,7 @@
 const http = require('http');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const environment = require('dotenv');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -10,19 +13,10 @@ const { spawn } = require('child_process');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser)
 
-
-app.use(session({
-    secret: 'not-secure-key', // Change this to a secure secret key
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 100000 
-      }
-  }));
 
 app.get('/sign-up', (req, res) => {
-  
     let scriptPath = "./webpages/signuppage.php";
     const phpProcess = spawn('php', [scriptPath]);
     phpProcess.stdout.on('data', (data) => {
@@ -47,7 +41,10 @@ app.post('/sign-up', (req, res) => {
     // do a select in the database based on user name, 
     // 1. if email already exists then redirect to login page
     // 2. if it doesnt create the account 
+    const secretKey = process.env.xyz;
+    let key_generation = 
 
+    
     if (password !== confirmPassword) {
         return res.status(400).send('Passwords do not match');
     }
