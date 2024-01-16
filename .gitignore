@@ -1,2 +1,7 @@
 .env
 node_modules
+commands.sql
+item_data.csv
+moves.csv
+pokemon_data.csv
+pokemon_dataset.py
